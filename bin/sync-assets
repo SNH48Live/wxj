@@ -2,7 +2,7 @@
 
 here=$0:A:h
 root=$here:h
-build_dir=${1:-$root/_build}
+build_dir=${1:-$root/public}
 assets_dir=$build_dir/assets
 mkdir -p $assets_dir
 for dir in css images js; do
