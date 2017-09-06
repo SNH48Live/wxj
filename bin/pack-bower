@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+here=$0:A:h
+root=$here:h
+bower=$root/bower_components
+
+js_output=$root/js/bower_packed.js
+js_map_path=$root/js/bower_packed.js.map
+js_map_relative_path=bower_packed.js.map
+cat $bower/jquery/dist/jquery.min.js >$js_output
+uglifyjs \
+    $bower/fancybox/dist/jquery.fancybox.js \
+    $bower/jquery_lazyload/jquery.lazyload.js \
+    $bower/js-cookie/src/js.cookie.js \
+    $bower/jquery-throttle-debounce/jquery.ba-throttle-debounce.js \
+    $bower/mousetrap/mousetrap.js \
+    $bower/mousetrap/plugins/pause/mousetrap-pause.js \
+    -c -m \
+    >> $js_output
+
+css_output=$root/css/bower_packed.css
+cat $bower/normalize-css/normalize.css \
+    $bower/fancybox/dist/jquery.fancybox.css \
+    | cleancss -o $css_output

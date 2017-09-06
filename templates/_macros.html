@@ -1,0 +1,101 @@
+{%- macro _info_nav_bar_nav_element(type, text, link) -%}
+<span class="info-nav-bar-nav {{ type }}">
+  {%- if link -%}<a href="{{ link }}">{%- endif -%}
+  {{ text }}
+  {%- if link -%}</a>{%- endif -%}
+</span>
+{%- endmacro -%}
+
+
+{%- macro info_nav_bar(info_text=None, first_text=None, first_link=None, prev_text=None, prev_link=None, next_text=None, next_link=None, last_text=None, last_link=None, back_to_top=False) -%}
+<div class="info-nav-bar clear">
+  {%- if info_text %}
+  <span class="left">{{ info_text }}</span>
+  {%- endif %}
+  {%- if back_to_top or first_text or prev_text or next_text or last_text %}
+  <span class="right">
+    {%- if back_to_top %}
+    <span class="back-to-top clickable">回到顶端</span>
+    {%- endif %}
+    {%- if first_text %}
+    {{ _info_nav_bar_nav_element('first', first_text, first_link) }}
+    {%- endif %}
+    {%- if prev_text %}
+    {{ _info_nav_bar_nav_element('prev', prev_text, prev_link) }}
+    {%- endif %}
+    {%- if next_text %}
+    {{ _info_nav_bar_nav_element('next', next_text, next_link) }}
+    {%- endif %}
+    {%- if last_text %}
+    {{ _info_nav_bar_nav_element('last', last_text, last_link) }}
+    {%- endif %}
+  </span>
+  {%- endif %}
+</div>
+{%- endmacro -%}
+
+
+{%- macro fancybox_image(filename, custom_data=None) -%}
+{%- if LAZYLOAD -%}
+  {%- set src -%}class="lazy" data-original{%- endset -%}
+  {%- set srcset -%}data-srcset{%- endset -%}
+{%- else -%}
+  {%- set src -%}src{%- endset -%}
+  {%- set srcset -%}srcset{%- endset -%}
+{%- endif -%}
+
+<a href="{% if LOCAL_IMAGES %}{{ filename|localimgpath('large') }}{% else %}{{ filename|sinaimgpath('large') }}{% endif %}" class="fancybox"{% if custom_data %} {{ custom_data }}{% endif %}>
+  {%- if LOCAL_IMAGES %}
+  <img {{ src }}="{{ filename|localimgpath('thumb120') }}" {{ srcset }}="{{ filename|localimgpath('thumb240') }} 2x, {{ filename|localimgpath('thumb360') }} 3x" alt="{{ filename }}">
+  {%- else %}
+  <img {{ src }}="{{ filename|sinaimgpath('thumb180') }}" alt="{{ filename }}">
+  {%- endif %}
+</a>
+{%- endmacro -%}
+
+
+{%- macro gallery(images) -%}
+<div class="gallery grid{{ images|length }} clear">
+  {%- for filename in images %}
+  {{ fancybox_image(filename)|indent(2) }}
+  {%- endfor %}
+</div>
+{%- endmacro -%}
+
+
+{%- macro status_card(status) -%}
+<div class="status" id="{{ status.sid }}">
+  <div class="weibo-link">
+    <a href="{{ status.url }}" target="_blank">
+      <time data-timestamp="{{ status.created_at }}">{{ status.created_at|strftime }}</time>
+    </a>
+  </div>
+  <div class="status-text">{{ status.body|markup }}</div>
+
+  {%- if status.images %}
+  {{ gallery(status.images.split())|indent(2) }}
+  {%- endif %}
+
+  {%- if status.repost %}
+  <div class="orig-post">
+    <div class="orig-post-text">{{ status.orig_body|markup }}</div>
+    {%- if status.orig_images %}
+    {{ gallery(status.orig_images.split())|indent(4) }}
+    {%- endif %}
+  </div>
+  {%- endif %}
+</div>
+{%- endmacro -%}
+
+
+{%- macro status_list(statuses) -%}
+{% for status in statuses -%}
+{{ status_card(status) }}
+<hr>
+{% endfor -%}
+{%- endmacro -%}
+
+
+{#- Local Variables: -#}
+{#- mode: jinja2 -#}
+{#- End: -#}

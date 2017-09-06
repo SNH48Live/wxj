@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+here=$0:A:h
+root=$here:h
+build_dir=${1:-$root/_build}
+assets_dir=$build_dir/assets
+mkdir -p $assets_dir
+for dir in css images js; do
+    rsync -avP --link-dest=$root/$dir $root/$dir/ $assets_dir/$dir
+done

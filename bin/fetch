@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import sys
+
+HERE = os.path.dirname(os.path.realpath(__file__))
+ROOT = os.path.dirname(HERE)
+sys.path.insert(0, ROOT)
+
+from lib import api
+
+def main():
+    api.fetch_and_save()
+
+if __name__ == '__main__':
+    main()

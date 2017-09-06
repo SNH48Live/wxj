@@ -1,0 +1,24 @@
+{%- set title -%}图集{%- endset -%}
+
+{%- from '_macros.html' import info_nav_bar, fancybox_image with context -%}
+
+{% include '_header.html' %}
+  <main class="content">
+    <h1>图集</h1>
+    {%- set info -%}共{{ images|length }}张图片{%- endset %}
+    {{ info_nav_bar(info_text=info)|indent(4) }}
+    <hr>
+    <div class="gallery standalone clear">
+      {%- for status_url, filename in images %}
+      {%- set custom_data %}data-status-url="{{ status_url }}"{% endset %}
+      {{ fancybox_image(filename, custom_data)|indent(6) }}
+      {%- endfor %}
+    </div>
+    <hr>
+    {{ info_nav_bar(info_text=info, back_to_top=True)|indent(4) }}
+  </main>
+{% include '_footer.html' %}
+
+{#- Local Variables: -#}
+{#- mode: jinja2 -#}
+{#- End: -#}

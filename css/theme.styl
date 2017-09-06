@@ -1,0 +1,231 @@
+bg-color = #fbe9f1
+nav-bg-color = #e3689e
+nav-text-color = #f3bed5
+highlight-bg-color = #fcf2f8
+orig-status-bg-color = #f7d4e3
+hr-color = #eb93b9
+img-placeholder-color = #f6cbde
+dim-color = #888
+translucent = rgba(255, 255, 255, 0.5)  // Use 50% transparency to emulate translucency
+font = 16px "Times New Roman", Times, "Songti SC", SimSum, serif
+
+with-bottom-border()
+  border-bottom solid 1px
+
+no-bottom-border()
+  border-bottom none
+
+emojis()
+  img
+    width 18px
+    height 18px
+    position relative
+    bottom 1px
+
+*
+  -webkit-tap-highlight-color transparent
+
+body
+  margin 0 auto
+  padding 20px 0 30px 0
+  width 620px
+  font font
+  text-align justify
+  background bg-color
+
+h1
+  text-align center
+  font-size 140%
+
+a
+  color inherit
+  text-decoration none
+  with-bottom-border()
+
+  &.fancybox-close
+    no-bottom-border()
+
+hr
+  margin 0 10px
+  border 0
+  border-top 1px solid hr-color
+
+img
+  vertical-align middle
+
+.left
+  float left
+
+.right
+  float right
+
+.clear:after
+  content ""
+  display block
+  height 0
+  clear both
+  visibility hidden
+
+.clickable
+  with-bottom-border()
+  &:hover
+    cursor pointer
+
+nav
+  position fixed
+  left calc(50% + 360px)
+  top calc(50% - 56px)
+  font-size 110%
+  line-height 160%
+  color nav-text-color
+  .menu-toggle
+    display none
+  a
+    no-bottom-border()
+
+.info-nav-bar
+  margin 5px 10px
+  font-size 80%
+  &-nav
+    margin-left: 3px
+
+.status
+  padding 8px 10px
+  &.highlight
+    background highlight-bg-color
+    box-shadow 0 0 2px 1px hr-color
+
+.weibo-link
+  font-size 75%
+  color dim-color
+  a
+    no-bottom-border()
+
+.status-text
+  margin 5px 0
+  emojis()
+
+.orig-post
+  padding 5px 10px
+  background orig-status-bg-color
+  emojis()
+
+.gallery
+  margin 7px 0 5px 0
+
+  &.grid1
+    width 122px
+  &.grid2, &.grid4
+    width 244px
+  &.standalone // on /gallery
+    margin 10px auto
+    width 610px
+  width 366px // default
+
+  a
+    float left
+    padding 1px
+    no-bottom-border()
+
+  img
+    width 120px
+    height 120px
+    // Color of rectangle and alt text of not-yet-loaded images
+    color img-placeholder-color
+    background img-placeholder-color
+
+.fancybox
+  position relative
+  &:focus
+    outline 0
+  .gif-indicator
+    position absolute
+    left 5%
+    top 5%
+    font-family Helvetica, Arial, sans-serif
+    font-size 12px
+    color white
+
+fancybox-button-before-svg(filename, size)
+  width 44px
+  height 44px
+  position relative
+  background url("/assets/images/icons/"filename) center/size no-repeat
+
+.fancybox-button
+  &.fancybox-open-weibo:before
+    fancybox-button-before-svg("weibo.svg", 18px)
+  &.fancybox-open-image:before
+    fancybox-button-before-svg("open.svg", 14px)
+
+.loading
+  margin 10px 0
+  text-align center
+  font-size 120%
+  &:after
+    overflow hidden
+    display inline-block
+    vertical-align bottom
+    animation ellipsis steps(4,end) 1s infinite
+    content "\2026"  // U+2026 HORIZONTAL ELLIPSIS
+    width 0
+  &.fail:after
+    all initial
+
+@keyframes ellipsis
+  to
+    width 1.5em
+
+@media screen and (max-width: 879px)
+  body
+    padding-top 50px
+    width 100%
+    max-width 620px
+  nav
+    left 0
+    top 0
+    height 32px
+    width 100%
+    background nav-bg-color
+    z-index 1
+    .menu-toggle
+      position relative
+      left calc(50% - 310px)
+      height 24px
+      width 18px
+      padding 4px 10px
+      display block
+      &:before
+        display block
+        content ""
+        background-image url("/assets/images/icons/hamburger.svg")
+        background-size 18px 24px
+        height 24px
+        width 18px
+      &:hover
+        cursor pointer
+    .menu
+      position relative
+      left calc(50% - 300px)
+      width 100px
+      color bg-color
+      text-align center
+      display none
+      div
+        padding 5px
+        border-top solid 1px translucent
+        background nav-bg-color
+        background-clip padding-box
+
+@media screen and (max-width: 619px)
+  nav
+    .menu-toggle
+      left 0
+    .menu
+      left 10px
+  .gallery.standalone
+    width 488px
+
+@media screen and (max-width: 487px)
+  .gallery.standalone
+    width 366px

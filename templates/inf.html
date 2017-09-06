@@ -1,0 +1,18 @@
+{%- set title -%}全部状态{%- endset -%}
+
+{%- from '_macros.html' import info_nav_bar -%}
+
+{% include '_header.html' %}
+  <main class="content">
+    <h1>全部状态</h1>
+    <script>window.totalStatuses = {{ total_statuses }}; window.totalPages = {{ total_pages }}</script>
+    {%- set info -%}已加载0/{{ total_statuses }}条状态{%- endset %}
+    {{ info_nav_bar(info_text=info)|indent(4) }}
+    <hr>
+    {{ info_nav_bar(info_text=info, back_to_top=True)|indent(4) }}
+  </main>
+{% include '_footer.html' %}
+
+{#- Local Variables: -#}
+{#- mode: jinja2 -#}
+{#- End: -#}

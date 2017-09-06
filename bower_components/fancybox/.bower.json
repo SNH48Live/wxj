@@ -1,0 +1,12 @@
+{
+  "name": "fancybox",
+  "homepage": "https://github.com/fancyapps/fancybox",
+  "_release": "8fbbd52",
+  "_resolution": {
+    "type": "commit",
+    "commit": "8fbbd52"
+  },
+  "_source": "https://github.com/fancyapps/fancybox.git",
+  "_target": "8fbbd52",
+  "_originalSource": "fancyapps/fancybox"
+}

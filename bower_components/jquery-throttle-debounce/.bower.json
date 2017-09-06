@@ -1,0 +1,13 @@
+{
+  "name": "jquery-throttle-debounce",
+  "homepage": "https://github.com/cowboy/jquery-throttle-debounce",
+  "_release": "v1.1",
+  "_resolution": {
+    "type": "tag",
+    "tag": "v1.1",
+    "commit": "e6d8907108302354b9a0f615084c3405878e3a47"
+  },
+  "_source": "https://github.com/cowboy/jquery-throttle-debounce.git",
+  "_target": "v1.1",
+  "_originalSource": "cowboy/jquery-throttle-debounce"
+}

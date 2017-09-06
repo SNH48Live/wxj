@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import sys
+
+HERE = os.path.dirname(os.path.realpath(__file__))
+ROOT = os.path.dirname(HERE)
+sys.path.insert(0, ROOT)
+
+from lib import config, jinjaenv
+from lib.db import Status, filter_statuses, parse_and_save_all_existing_statuses
+from lib.jinjaenv import JINJAENV
+from lib.logger import logger
+
+def generate_page(template, path, **kwargs):
+    logger.info(f'generating {path}')
+    if isinstance(template, str):
+        template = JINJAENV.get_template(template)
+    path = os.path.join(config.builddir, path)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fp:
+        fp.write(template.render(**kwargs))
+
+def generate_index():
+    os.makedirs(config.builddir, exist_ok=True)
+    indexpath = os.path.join(config.builddir, 'index.html')
+    if os.path.islink(indexpath) and os.readlink(indexpath) == '1.html':
+        return
+    elif os.path.exists(indexpath):
+        os.remove(indexpath)
+    logger.info('linking index.html => 1.html')
+    os.symlink('1.html', indexpath)
+
+def generate_all(statuses):
+    with jinjaenv.setglobal('LAZYLOAD', True):
+        generate_page('all.html', 'all.html', statuses=statuses)
+
+def generate_inf(statuses):
+    total_statuses = len(statuses)
+    generate_page(
+        'inf.html', 'inf.html',
+        total_statuses=total_statuses,
+        total_pages=(total_statuses - 1) // config.statuses_per_page + 1,
+    )
+
+def generate_paginated(statuses):
+    total = len(statuses)
+    per_page = config.statuses_per_page
+    page_count = (total - 1) // per_page + 1
+    for page in range(1, page_count + 1):
+        generate_page('paginated.html', f'{page}.html',
+                      page=page,
+                      total_pages=page_count,
+                      statuses=statuses[per_page*(page-1):per_page*page])
+
+def generate_gallery(statuses):
+    images = [(status.url, image) for status in statuses for image in status.images.split()]
+    with jinjaenv.setglobal('LAZYLOAD', True):
+        generate_page('gallery.html', 'gallery.html', images=images)
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--parse', action='store_true',
+                        help='parse saved statuses on disk and (re-)populate database')
+    args = parser.parse_args()
+
+    if args.parse:
+        parse_and_save_all_existing_statuses()
+
+    statuses = filter_statuses(Status.select().order_by(Status.created_at.desc()))
+    logger.info(f'generating site in {config.builddir}')
+    generate_index()
+    generate_all(statuses)
+    generate_inf(statuses)
+    generate_paginated(statuses)
+    generate_gallery(statuses)
+    generate_page('not-found.html', 'not-found.html')
+
+if __name__ == '__main__':
+    main()

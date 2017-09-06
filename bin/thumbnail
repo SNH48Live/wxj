@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+[[ -n $DEBUG ]] && setopt xtrace
+
+here=$0:A:h
+root=$here:h
+images=$root/images
+mkdir -p $images/thumb120 $images/thumb240 $images/thumb360
+
+print_error () print -R $'\e[31m'"Error: $*"$'\e[0m' >&2
+
+for filename; do
+    orig=$images/large/$filename
+    [[ -f $orig ]] || { print_error "$orig does not exist"; continue }
+    for res in 120 240 360; do
+        convert $orig'[0]' -resize ${res}x${res}'^' -gravity Center -crop ${res}x${res}+0+0 +repage $images/thumb$res/$filename
+    done
+done

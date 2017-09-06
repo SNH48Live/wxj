@@ -1,0 +1,2 @@
+- `m.weibo.cn-*.png` emojis are extracted from aggregate images used on `m.weibo.cn`;
+- Most other images are from the Weibo iOS app, in `Weibo.app/Emoticons.bundle/com.sina.normal` subdirectory (unpack the .ipa file first).
