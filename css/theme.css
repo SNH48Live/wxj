@@ -123,9 +123,10 @@ nav a {
   border-bottom: none;
 }
 .gallery img {
+  display: block;
   width: 120px;
   height: 120px;
-  color: #f6cbde;
+  color: rgba(0,0,0,0);
   background: #f6cbde;
 }
 .fancybox {
