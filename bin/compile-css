@@ -3,8 +3,10 @@
 # compile-css [stylus options...]
 
 setopt errexit
+
 here=$0:A:h
 root=$here:h
 cssdir=$root/css
-cd $cssdir
-stylus -m $@ theme.styl -o theme.css
+
+cd $root
+yarn run stylus -- -m $@ $cssdir/theme.styl -o $cssdir/theme.css

@@ -1,0 +1,8 @@
+{
+  "license": "MIT",
+  "dependencies": {
+    "clean-css-cli": "^4.1.9",
+    "stylus": "^0.54.5",
+    "uglify-js": "^3.0.28"
+  }
+}

@@ -1,14 +1,18 @@
 #!/usr/bin/env zsh
 
+setopt errexit
+
 here=$0:A:h
 root=$here:h
 bower=$root/bower_components
 
+cd $root
+
 js_output=$root/js/bower_packed.js
 js_map_path=$root/js/bower_packed.js.map
 js_map_relative_path=bower_packed.js.map
-cat $bower/jquery/dist/jquery.min.js >$js_output
-uglifyjs \
+yarn run uglifyjs -- \
+    $bower/jquery/dist/jquery.js \
     $bower/fancybox/dist/jquery.fancybox.js \
     $bower/jquery_lazyload/jquery.lazyload.js \
     $bower/js-cookie/src/js.cookie.js \
@@ -16,9 +20,9 @@ uglifyjs \
     $bower/mousetrap/mousetrap.js \
     $bower/mousetrap/plugins/pause/mousetrap-pause.js \
     -c -m \
-    >> $js_output
+    -o $js_output
 
 css_output=$root/css/bower_packed.css
 cat $bower/normalize-css/normalize.css \
     $bower/fancybox/dist/jquery.fancybox.css \
-    | cleancss -o $css_output
+    | yarn run cleancss -- -o $css_output
