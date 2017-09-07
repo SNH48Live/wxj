@@ -80,47 +80,6 @@ def markup_status_body(body):
     body = TCN_LINK.sub(tcn_link_repl, body)
     return body
 
-def flatten_status_body(body):
-    # Transform repost mention colons first
-    body = REPOST_MENTION.sub(lambda m: f'{m.group(1)}：', body)
-    soup = bs4.BeautifulSoup(body, 'html.parser')
-    text = ''
-    children = soup.children
-    for e in children:
-        if isinstance(e, bs4.NavigableString):
-            text += html.escape(e)
-        else:
-            if e.name == 'a':
-                href = e['href']
-                if (href.startswith('http://m.weibo.cn/n/') or
-                    href.startswith('http://m.weibo.cn/k/')):
-                    text += f'<b>{html.escape(e.text)}</b>'
-                elif e.span is not None and 'url-icon' in e.span['class']:
-                    ne = next(children)
-                    assert ne.name == 'span' and 'surl-text' in ne['class']
-
-                    shorturl = e['data-url']
-                    url = shortlinks.resolve(shorturl)
-                    desc = ne.text
-
-                    text += f'<a href="{url}" data-canonical-href="{shorturl}" target="_blank">{html.escape(desc)}</a>'
-                else:
-                    text += str(e)
-            elif e.name == 'i' and 'face' in e['class']:
-                assert e.text.startswith('[') and e.text.endswith(']')
-                label = e.text[1:-1]
-                emojis.save_mweibocn_emoji(label, e['class'])
-                text += e.text
-            elif e.name == 'span' and 'url-icon' in e['class']:
-                emojiurl = e.img['src']
-                localurl = emojis.resolve_linked_emoji(emojiurl)
-                text += f'<img src="{localurl}">'
-            elif e.name == 'br':
-                text += '<br>'
-            else:
-                text += str(e)
-    return text
-
 MWEIBOCN_STATUS_LINK = re.compile(r'^https?://m\.weibo\.cn/status/(?P<basename>\w+)(\?.*)?')
 INCOMPLETE_STATUS_PATTERN = re.compile(r'<a href="/status/(?P<sid>\d+)">全文</a>')
 

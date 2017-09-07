@@ -467,4 +467,18 @@ $(function () {
   $window.on('beforeunload', function () {
     Cookies.set('scroll', $window.scrollTop(), {path: window.location.pathname})
   })
+
+  // Audio playback
+  var audio = $('#audio').get(0)
+  // Set audio volume to 40% in order not to startle people
+  audio.volume = 0.4
+  $('#audio-control').click(function () {
+    var $this = $(this)
+    if ($this.hasClass('playing')) {
+      audio.pause()
+    } else {
+      audio.play()
+    }
+    $this.toggleClass('playing')
+  })
 })

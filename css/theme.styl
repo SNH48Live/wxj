@@ -1,13 +1,14 @@
 bg-color = hsl(72, 78%, 80%)
-nav-bg-color = hsl(72, 78%, 45%)
 nav-text-color = hsl(72, 78%, 45%)
-highlight-bg-color = hsl(72, 78%, 90%)
+highlight-bg-color = hsl(72, 78%, 85%)
 orig-status-bg-color = hsl(72, 78%, 70%)
 hr-color = hsl(72, 78%, 45%)
 img-placeholder-color = hsl(72, 78%, 55%)
 dim-color = #888
 translucent = rgba(255, 255, 255, 0.5)  // Use 50% transparency to emulate translucency
 font = 16px "Times New Roman", Times, "Songti SC", SimSum, serif
+mobile-nav-bg-color = hsl(72, 78%, 45%)
+mobile-nav-text-color = hsl(72, 78%, 85%)
 
 with-bottom-border()
   border-bottom solid 1px
@@ -173,6 +174,22 @@ fancybox-button-before-svg(filename, size)
   to
     width 1.5em
 
+#audio-control
+  position fixed
+  left calc(50% + 366px)
+  bottom 30px
+  &:hover
+    cursor pointer
+  &:before
+    width 24px
+    height 24px
+    display inline-block
+    vertical-align middle
+    background embedurl("images/icons/play-circle.svg") center/24px no-repeat
+    content ""
+  &.playing:before
+    background-image embedurl("images/icons/pause-circle.svg")
+
 @media screen and (max-width: 879px)
   body
     padding-top 50px
@@ -183,7 +200,7 @@ fancybox-button-before-svg(filename, size)
     top 0
     height 32px
     width 100%
-    background nav-bg-color
+    background mobile-nav-bg-color
     z-index 1
     .menu-toggle
       position relative
@@ -205,14 +222,26 @@ fancybox-button-before-svg(filename, size)
       position relative
       left calc(50% - 300px)
       width 100px
-      color bg-color
+      color mobile-nav-text-color
       text-align center
       display none
       div
         padding 5px
         border-top solid 1px translucent
-        background nav-bg-color
+        background mobile-nav-bg-color
         background-clip padding-box
+  #audio-control
+    left initial
+    bottom initial
+    right 6px
+    top 6px
+    z-index 1
+    &:before
+      width 20px
+      height 20px
+      background embedurl("images/icons/play-circle-mobile.svg") center/20px no-repeat
+    &.playing:before
+      background-image embedurl("images/icons/pause-circle-mobile.svg")
 
 @media screen and (max-width: 619px)
   nav
