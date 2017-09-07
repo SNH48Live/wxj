@@ -4,6 +4,8 @@ import json
 import os
 import re
 
+from . import config
+
 HERE = os.path.dirname(os.path.realpath(__file__))
 DATAFILE = os.path.join(HERE, 'emojis.json')
 
@@ -24,7 +26,7 @@ def emoji(label):
         return EMOJIS['apple'][label]
     elif label in EMOJIS['pictorial']:
         filename = EMOJIS['pictorial'][label]
-        path = f'/assets/images/emojis/{filename}'
+        path = config.asset_path(f'images/emojis/{filename}')
         return f'<img src="{path}" alt="[{label}]">'
     else:
         return f'[{label}]'

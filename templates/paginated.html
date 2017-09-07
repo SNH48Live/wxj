@@ -2,18 +2,22 @@
 
 {%- from '_macros.html' import info_nav_bar, status_list with context -%}
 
+{%- macro page_link(page) -%}
+  {{ ('/%d' % page)|sitepath }}
+{%- endmacro -%}
+
 {% include '_header.html' %}
   <main class="content">
     <h1>天草应援纪念馆</h1>
     {%- set info_text %}第{{ page }}/{{ total_pages }}页{%- endset %}
     {%- set first_text %}首{% endset %}
-    {%- set first_link %}/1{% endset %}
+    {%- set first_link %}{{ page_link(1) }}{% endset %}
     {%- set prev_text %}上一页{% endset %}
-    {%- set prev_link %}{% if page > 1 %}/{{ page - 1 }}{% endif %}{% endset %}
+    {%- set prev_link %}{% if page > 1 %}{{ page_link(page - 1) }}{% endif %}{% endset %}
     {%- set next_text %}下一页{% endset %}
-    {%- set next_link %}{% if page < total_pages %}/{{ page + 1 }}{% endif %}{% endset %}
+    {%- set next_link %}{% if page < total_pages %}{{ page_link(page + 1) }}{% endif %}{% endset %}
     {%- set last_text %}尾{% endset %}
-    {%- set last_link %}/{{ total_pages }}{% endset %}
+    {%- set last_link %}{{ page_link(total_pages) }}{% endset %}
     {{ info_nav_bar(info_text, first_text, first_link, prev_text, prev_link, next_text, next_link, last_text, last_link)|indent(4) }}
     <hr>
     {{ status_list(statuses)|indent(4) }}

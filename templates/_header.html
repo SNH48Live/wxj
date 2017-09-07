@@ -5,18 +5,18 @@
   <title>天草应援纪念馆 {{ title|e }}</title>
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta content="width=device-width,initial-scale=1" name="viewport">
-  <link href="/assets/css/bower_packed.css" rel="stylesheet">
-  <link href="/assets/css/theme.css?v={{ CSS_VERSION }}" rel="stylesheet">
-  <script src="/assets/js/bower_packed.js"></script>
-  <script src="/assets/js/ui.js?v={{ JS_VERSION }}"></script>
+  <link href="{{ '/css/bower_packed.css'|assetpath }}" rel="stylesheet">
+  <link href="{{ ('/css/theme.css?v=%s' % CSS_VERSION)|assetpath }}" rel="stylesheet">
+  <script src="{{ '/js/bower_packed.js'|assetpath }}"></script>
+  <script src="{{ ('/js/ui.js?v=%s' % JS_VERSION)|assetpath }}"></script>
 </head>
 <body>
   <nav>
     <div class="menu-toggle"></div>
     <div class="menu">
-      <div><a href="/">分页</a></div>
-      <div><a href="/all">全部</a></div>
-      <div><a href="/inf">无限</a></div>
+      <div><a href="{{ '/'|sitepath }}">分页</a></div>
+      <div><a href="{{ '/all'|sitepath }}">全部</a></div>
+      <div><a href="{{ '/inf'|sitepath }}">无限</a></div>
     </div>
   </nav>
 

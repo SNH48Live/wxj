@@ -10,8 +10,6 @@ import subprocess
 from . import config, db
 from .logger import logger
 
-UID = config.uid
-
 HERE = os.path.dirname(os.path.realpath(__file__))
 ROOT = os.path.dirname(HERE)
 APIDIR = os.path.join(ROOT, 'api')

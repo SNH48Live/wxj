@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+from . import config
+
 def localimgpath(filename, res):
-    return f'/assets/images/{res}/{filename}'
+    return config.asset_path(f'images/{res}/{filename}')
 
 def sinaimgpath(filename, res):
     subdomain = 'ww' + str(sum(map(ord, filename)) % 4 + 1)

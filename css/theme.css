@@ -140,17 +140,11 @@ nav a {
   font-size: 12px;
   color: #fff;
 }
-.fancybox-button.fancybox-open-weibo:before {
-  width: 44px;
-  height: 44px;
-  position: relative;
-  background: url("/assets/images/icons/weibo.svg") center/18px no-repeat;
-}
 .fancybox-button.fancybox-open-image:before {
   width: 44px;
   height: 44px;
   position: relative;
-  background: url("/assets/images/icons/open.svg") center/14px no-repeat;
+  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xNzkyIDY0MHEwIDI2LTE5IDQ1bC01MTIgNTEycS0xOSAxOS00NSAxOXQtNDUtMTktMTktNDV2LTI1NmgtMjI0cS05OCAwLTE3NS41IDZ0LTE1NCAyMS41LTEzMyA0Mi41LTEwNS41IDY5LjUtODAgMTAxLTQ4LjUgMTM4LjUtMTcuNSAxODFxMCA1NSA1IDEyMyAwIDYgMi41IDIzLjV0Mi41IDI2LjVxMCAxNS04LjUgMjV0LTIzLjUgMTBxLTE2IDAtMjgtMTctNy05LTEzLTIydC0xMy41LTMwLTEwLjUtMjRxLTEyNy0yODUtMTI3LTQ1MSAwLTE5OSA1My0zMzMgMTYyLTQwMyA4NzUtNDAzaDIyNHYtMjU2cTAtMjYgMTktNDV0NDUtMTkgNDUgMTlsNTEyIDUxMnExOSAxOSAxOSA0NXoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=") center/14px no-repeat;
 }
 .loading {
   margin: 10px 0;
@@ -193,7 +187,7 @@ nav a {
   nav .menu-toggle:before {
     display: block;
     content: "";
-    background-image: url("/assets/images/icons/hamburger.svg");
+    background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTIgMTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBmaWxsPSIjZmJlOWYxIj4KICAgICAgICAgICAgPHBhdGggZD0iTTExLjQxLDkgTDAuNTksOSBDMCw5IDAsOC41OSAwLDggQzAsNy40MSAwLDcgMC41OSw3IEwxMS40LDcgQzExLjk5LDcgMTEuOTksNy40MSAxMS45OSw4IEMxMS45OSw4LjU5IDExLjk5LDkgMTEuNCw5IEwxMS40MSw5IFogTTExLjQxLDUgTDAuNTksNSBDMCw1IDAsNC41OSAwLDQgQzAsMy40MSAwLDMgMC41OSwzIEwxMS40LDMgQzExLjk5LDMgMTEuOTksMy40MSAxMS45OSw0IEMxMS45OSw0LjU5IDExLjk5LDUgMTEuNCw1IEwxMS40MSw1IFogTTAuNTksMTEgTDExLjQsMTEgQzExLjk5LDExIDExLjk5LDExLjQxIDExLjk5LDEyIEMxMS45OSwxMi41OSAxMS45OSwxMyAxMS40LDEzIEwwLjU5LDEzIEMwLDEzIDAsMTIuNTkgMCwxMiBDMCwxMS40MSAwLDExIDAuNTksMTEgTDAuNTksMTEgWiI+PC9wYXRoPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==");
     background-size: 18px 24px;
     height: 24px;
     width: 18px;

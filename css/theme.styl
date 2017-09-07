@@ -149,11 +149,9 @@ fancybox-button-before-svg(filename, size)
   width 44px
   height 44px
   position relative
-  background url("/assets/images/icons/"filename) center/size no-repeat
+  background embedurl("images/icons/"filename) center/size no-repeat
 
 .fancybox-button
-  &.fancybox-open-weibo:before
-    fancybox-button-before-svg("weibo.svg", 18px)
   &.fancybox-open-image:before
     fancybox-button-before-svg("open.svg", 14px)
 
@@ -197,7 +195,7 @@ fancybox-button-before-svg(filename, size)
       &:before
         display block
         content ""
-        background-image url("/assets/images/icons/hamburger.svg")
+        background-image embedurl("images/icons/hamburger.svg")
         background-size 18px 24px
         height 24px
         width 18px

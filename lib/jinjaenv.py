@@ -44,7 +44,9 @@ GLOBALS['JS_VERSION'] = version.js_version
 GLOBALS['LOCAL_IMAGES'] = config.local_images
 
 FILTERS = JINJAENV.filters
+FILTERS['assetpath'] = config.asset_path
 FILTERS['localimgpath'] = utils.localimgpath
 FILTERS['markup'] = markup
 FILTERS['sinaimgpath'] = utils.sinaimgpath
+FILTERS['sitepath'] = config.site_path
 FILTERS['strftime'] = strftime
