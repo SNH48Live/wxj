@@ -1,9 +1,9 @@
 {
-  "name": "momo",
+  "name": "wxj",
   "authors": [
-    "Zhiming Wang <zmwangx@gmail.com>"
+    "SNH48 Live <snh48live@gmail.com>"
   ],
-  "homepage": "https://github.com/zmwangx/momo",
+  "homepage": "https://github.com/SNH48Live/wxj",
   "private": true,
   "dependencies": {
     "jquery": "^3.1.1",
