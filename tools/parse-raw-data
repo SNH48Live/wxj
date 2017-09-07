@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+import argparse
+import collections
+import json
+import pathlib
+
+
+HERE = pathlib.Path(__file__).resolve().parent
+ROOT = HERE.parent
+RAW_DATA_FILE = ROOT / 'raw' / 'data.json'
+PARSED_DATA_DIR = ROOT / 'api'
+
+
+def parse(raw_data):
+    for status in raw_data:
+        mid = status['mid']
+        with open(PARSED_DATA_DIR / f'{mid}.json', 'w') as fp:
+            json.dump(status, fp, ensure_ascii=False, indent=2)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('raw_data_file', nargs='?', default=RAW_DATA_FILE,
+                        help='''the raw data file (containing list of statuses)
+                        to be parsed, defaulting to raw/data.json''')
+    args = parser.parse_args()
+
+    with open(args.raw_data_file) as fp:
+        raw_data = json.load(fp, object_pairs_hook=collections.OrderedDict)
+        parse(raw_data)
+
+
+if __name__ == '__main__':
+    main()

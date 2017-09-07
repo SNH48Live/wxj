@@ -5,8 +5,9 @@ import json
 import os
 import re
 
-from . import photos, utils
-from .config import session
+import requests
+
+from . import utils
 from .logger import logger
 
 HERE = os.path.dirname(os.path.realpath(__file__))
@@ -23,7 +24,7 @@ load()
 def expand(shorturl):
     logger.info(f'expanding {shorturl}')
     try:
-        longurl = session.head(shorturl).headers['Location']
+        longurl = requests.head(shorturl).headers['Location']
         assert longurl != shorturl
         MAPPING[shorturl] = longurl
         return longurl
@@ -32,11 +33,7 @@ def expand(shorturl):
         return shorturl
 
 def resolve(shorturl):
-    longurl = MAPPING[shorturl] if shorturl in MAPPING else expand(shorturl)
-    if photos.WEIBO_PHOTO_URL_PATTERN.match(longurl):
-        return utils.sinaimgpath(photos.resolve(longurl), 'large')
-    else:
-        return longurl
+    return MAPPING[shorturl] if shorturl in MAPPING else expand(shorturl)
 
 URL_STRIP_BOILERPLATE = re.compile(r'^https?://(www\.)?(?P<interesting>.*)')
 # Target length of the display version of an expanded t.cn URL

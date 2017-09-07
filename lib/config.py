@@ -3,7 +3,6 @@
 import http.cookies
 import os
 
-import requests
 import yaml
 
 from .logger import logger
@@ -15,13 +14,6 @@ builddir = None
 local_images = None
 statuses_per_page = None
 uid = None
-session = requests.Session()
-
-def load_cookies(s):
-    cookies = http.cookies.SimpleCookie()
-    cookies.load(s)
-    for key, morsel in cookies.items():
-        session.cookies.set(key, morsel.value, domain='weibo.com')
 
 def load(config_file=None):
     if config_file is None:
@@ -33,18 +25,11 @@ def load(config_file=None):
     global builddir
     global local_images
     global statuses_per_page
-    global uid
-    builddir = config.get('builddir', '_build')
+    builddir = config.get('builddir', 'public')
     if not os.path.isabs(builddir):
         builddir = os.path.join(ROOT, builddir)
     local_images = config.get('local_images', True)
     statuses_per_page = config.get('statuses_per_page', 20)
-    uid = config.get('uid', 3053424305)
-
-    cookies = config.get('cookies', '')
-    user_agent = config.get('user_agent', 'Safari')
-    load_cookies(cookies)
-    session.headers['User-Agent'] = user_agent
 
 if 'MOMOCONF' in os.environ:
     config_file = os.getenv('MONOCONF')

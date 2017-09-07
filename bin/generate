@@ -54,11 +54,6 @@ def generate_paginated(statuses):
                       total_pages=page_count,
                       statuses=statuses[per_page*(page-1):per_page*page])
 
-def generate_gallery(statuses):
-    images = [(status.url, image) for status in statuses for image in status.images.split()]
-    with jinjaenv.setglobal('LAZYLOAD', True):
-        generate_page('gallery.html', 'gallery.html', images=images)
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--parse', action='store_true',
@@ -74,7 +69,7 @@ def main():
     generate_all(statuses)
     generate_inf(statuses)
     generate_paginated(statuses)
-    generate_gallery(statuses)
+    # generate_gallery(statuses)
     generate_page('not-found.html', 'not-found.html')
 
 if __name__ == '__main__':

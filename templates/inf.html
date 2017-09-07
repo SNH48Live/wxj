@@ -4,7 +4,7 @@
 
 {% include '_header.html' %}
   <main class="content">
-    <h1>全部状态</h1>
+    <h1>天草应援纪念馆</h1>
     <script>window.totalStatuses = {{ total_statuses }}; window.totalPages = {{ total_pages }}</script>
     {%- set info -%}已加载0/{{ total_statuses }}条状态{%- endset %}
     {{ info_nav_bar(info_text=info)|indent(4) }}

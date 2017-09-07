@@ -76,12 +76,9 @@ nav a {
   background: #fcf2f8;
   box-shadow: 0 0 2px 1px #eb93b9;
 }
-.weibo-link {
+.status time {
   font-size: 75%;
   color: #888;
-}
-.weibo-link a {
-  border-bottom: none;
 }
 .status-text {
   margin: 5px 0;

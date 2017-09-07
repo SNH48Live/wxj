@@ -13,7 +13,6 @@ $(function () {
       window.DocumentTouch && document instanceof window.DocumentTouch
 
   var isHome = window.location.pathname.match(/\/(index(\.html)?)?/)
-  var isGallery = window.location.pathname.match(/\/gallery(\.html)?/)
   var isInf = window.location.pathname.match(/\/inf(\.html)?/)
 
   $.fn.extend({
@@ -89,7 +88,7 @@ $(function () {
 
   // Lazyload, if applicable
   $('img.lazy').lazyload({
-    threshold: isGallery ? 480 : 800,
+    threshold: 800,
     // Smallest possible transparent PNG file
     // https://kidsreturn.org/2011/04/smallest-possible-1x1-transparent-gif-and-png/
     // http://garethrees.org/2007/11/14/pngcrush/
@@ -151,7 +150,7 @@ $(function () {
       this.fancybox({
         // Eliminate animations in desktop browsers (note that setting speed to 0 would break things)
         speed: hasTouchSupport ? 300 : 1,
-        thumbs: !isGallery,
+        thumbs: true,
         slideShow: {
           speed: 1500
         },
@@ -159,9 +158,6 @@ $(function () {
           Mousetrap.pause()
 
           var buttons = instance.$refs.buttons
-          instance.$refs.openWeiboButton =
-            $('<a class="fancybox-button fancybox-open-weibo" target="_blank" title="Weibo (W)"></a>')
-            .appendTo(buttons)
           instance.$refs.openImageButton =
             $('<a class="fancybox-button fancybox-open-image" target="_blank" title="Open (O)"></a>')
             .appendTo(buttons)
@@ -189,14 +185,6 @@ $(function () {
                 instance.close()
                 break
 
-              case 'W':
-                // Open original weibo
-                var weiboLink = $('a.fancybox-open-weibo').get(0)
-                if (weiboLink) {
-                  weiboLink.click()
-                }
-                break
-
               case 'O':
                 // Open original image
                 var imageLink = $('a.fancybox-open-image').get(0)
@@ -212,7 +200,6 @@ $(function () {
           })
         },
         beforeMove: function (instance, current) {
-          instance.$refs.openWeiboButton.attr('href', current.opts.$orig.attr('data-status-url'))
           instance.$refs.openImageButton.attr('href', current.src)
         },
         beforeClose: function () {
@@ -238,11 +225,7 @@ $(function () {
 
         // Add data-fancybox and data-status-url to fancybox images, and initialize fancybox
         var statusId = $status.attr('id')
-        var statusUrl = $status.find('.weibo-link a').attr('href')
-        $status.find('.fancybox').attr({
-          'data-fancybox': statusId,
-          'data-status-url': statusUrl
-        }).initFancybox()
+        $status.find('.fancybox').attr('data-fancybox', statusId).initFancybox()
 
         // Click to highlight
         $status.click(function () {
@@ -269,10 +252,7 @@ $(function () {
   })
 
   // Page specific
-  if (isGallery) {
-    // Link all gallery images to the same group
-    $('.fancybox').attr('data-fancybox', 'g').initFancybox()
-  } else if (isInf) {
+  if (isInf) {
     ;(function () {
       const totalPages = window.totalPages
       if (!totalPages > 0) {
@@ -414,10 +394,6 @@ $(function () {
   Mousetrap.bind('g A', function () {
     window.location = '/all'
   })
-  // g G => /gallery
-  Mousetrap.bind('g G', function () {
-    window.location = '/gallery'
-  })
   // G, b => bottom
   Mousetrap.bind(['G', 'b'], function () {
     $window.scrollTop($document.height())
@@ -484,18 +460,6 @@ $(function () {
     }
     img.closest('.status').highlight()
     img.click()
-    return false
-  })
-  // O => open original status
-  Mousetrap.bind('O', function () {
-    var $highlighted = $('.status.highlight')
-    // Open the original page of the currently highlighted status if it is on screen
-    if ($highlighted.length > 0 && $highlighted.onScreen()) {
-      $highlighted.find('.weibo-link a').get(0).click()
-      return false
-    }
-    // Highlight top visible status and open original page
-    topVisibleStatus().highlight().find('.weibo-link a').get(0).click()
     return false
   })
 

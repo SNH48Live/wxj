@@ -64,12 +64,8 @@
 
 
 {%- macro status_card(status) -%}
-<div class="status" id="{{ status.sid }}">
-  <div class="weibo-link">
-    <a href="{{ status.url }}" target="_blank">
-      <time data-timestamp="{{ status.created_at }}">{{ status.created_at|strftime }}</time>
-    </a>
-  </div>
+<div class="status" id="{{ status.status_id }}">
+  <time data-timestamp="{{ status.created_at }}">{{ status.created_at|strftime }}</time>
   <div class="status-text">{{ status.body|markup }}</div>
 
   {%- if status.images %}
