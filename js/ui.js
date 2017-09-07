@@ -7,6 +7,7 @@ $(function () {
   var $document = $(document)
   var $body = $('body')
   var $nav = $('nav')
+  var $audioControl = $('#audio-control')
 
   // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/touchevents.js
   var hasTouchSupport = ('ontouchstart' in window) ||
@@ -131,11 +132,13 @@ $(function () {
           if (scrollTop > lastScrollTop && scrollTop > $nav.height()) {
             // Scrolling down (past the top nav bar)
             $nav.slideUp(100)
+            $audioControl.slideUp(100)
           } else {
             // Scrolling up
             if (scrollTop + $window.height() < $document.height()) {
               // Exclude the case of bouncing at the bottom of page
               $nav.slideDown(100)
+              $audioControl.slideDown(100)
             }
           }
           lastScrollTop = scrollTop
@@ -472,7 +475,7 @@ $(function () {
   var audio = $('#audio').get(0)
   // Set audio volume to 40% in order not to startle people
   audio.volume = 0.4
-  $('#audio-control').click(function () {
+  $audioControl.click(function () {
     var $this = $(this)
     if ($this.hasClass('playing')) {
       audio.pause()
