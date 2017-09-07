@@ -146,7 +146,7 @@ def parse_and_save_status(json_):
             # TODO: transform status body and resolve complete status
             orig_body = markup_status_body(retweeted_status['text'])
             status['orig_body'] = f'<b>{orig_author}：</b>{orig_body}'
-            orig_status_images = parse_status_images(retweeted_status)
+            status['orig_images'] = parse_status_images(retweeted_status)
         else:
             status['orig_body'] = '原状态已被删除。'
 
