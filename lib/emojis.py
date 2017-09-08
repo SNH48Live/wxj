@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
 import json
-import os
 import re
 
-from . import config
+from . import utils
+from .common import DATADIR
 
-HERE = os.path.dirname(os.path.realpath(__file__))
-DATAFILE = os.path.join(HERE, 'emojis.json')
+DATAFILE = DATADIR / 'emojis.json'
 
 EMOJIS = {
     'apple': {},
@@ -15,7 +14,7 @@ EMOJIS = {
 }
 
 def load():
-    if os.path.isfile(DATAFILE):
+    if DATAFILE.exists():
         with open(DATAFILE) as fp:
             EMOJIS.update(json.load(fp))
 
@@ -26,7 +25,7 @@ def emoji(label):
         return EMOJIS['apple'][label]
     elif label in EMOJIS['pictorial']:
         filename = EMOJIS['pictorial'][label]
-        path = config.asset_path(f'images/emojis/{filename}')
+        path = utils.asset_path(f'images/emojis/{filename}')
         return f'<img src="{path}" alt="[{label}]">'
     else:
         return f'[{label}]'

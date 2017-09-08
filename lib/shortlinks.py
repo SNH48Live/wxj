@@ -2,20 +2,17 @@
 
 import atexit
 import json
-import os
 import re
 
 import requests
 
-from . import utils
-from .logger import logger
+from .common import DATADIR, logger
 
-HERE = os.path.dirname(os.path.realpath(__file__))
-DATAFILE = os.path.join(HERE, 'shortlinks.json')
+DATAFILE = DATADIR / 'shortlinks.json'
 MAPPING = {}
 
 def load():
-    if os.path.isfile(DATAFILE):
+    if DATAFILE.exists():
         with open(DATAFILE) as fp:
             MAPPING.update(json.load(fp))
 

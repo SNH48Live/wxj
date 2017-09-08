@@ -6,14 +6,17 @@ from contextlib import contextmanager
 import arrow
 import jinja2
 
-from . import config, emojis, utils, version
+from . import config, emojis, utils
+from .common import TEMPLATESDIR
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)
-TEMPLATE_DIR = os.path.join(ROOT, 'templates')
 JINJAENV = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
+    loader=jinja2.FileSystemLoader(os.fspath(TEMPLATESDIR)),
 )
+GLOBALS = JINJAENV.globals
+FILTERS = JINJAENV.filters
+
+def init():
+    GLOBALS['LOCAL_IMAGES'] = config.values.local_images
 
 @contextmanager
 def setglobal(name, value):
@@ -38,15 +41,9 @@ def markup(text):
 def strftime(timestamp):
     return arrow.get(timestamp).to('Asia/Shanghai').strftime('%Y-%m-%d %H:%M:%S')
 
-GLOBALS = JINJAENV.globals
-GLOBALS['CSS_VERSION'] = version.css_version
-GLOBALS['JS_VERSION'] = version.js_version
-GLOBALS['LOCAL_IMAGES'] = config.local_images
-
-FILTERS = JINJAENV.filters
-FILTERS['assetpath'] = config.asset_path
-FILTERS['localimgpath'] = utils.localimgpath
+FILTERS['assetpath'] = utils.asset_path
+FILTERS['localimgpath'] = utils.local_image_path
 FILTERS['markup'] = markup
-FILTERS['sinaimgpath'] = utils.sinaimgpath
-FILTERS['sitepath'] = config.site_path
+FILTERS['sinaimgpath'] = utils.sina_image_path
+FILTERS['sitepath'] = utils.site_path
 FILTERS['strftime'] = strftime

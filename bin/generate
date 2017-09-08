@@ -2,35 +2,36 @@
 
 import argparse
 import os
+import pathlib
 import sys
 
-HERE = os.path.dirname(os.path.realpath(__file__))
-ROOT = os.path.dirname(HERE)
-sys.path.insert(0, ROOT)
+HERE = pathlib.Path(__file__).resolve().parent
+ROOT = HERE.parent
+sys.path.insert(0, os.fspath(ROOT))
 
 from lib import config, jinjaenv
-from lib.db import Status, filter_statuses, parse_and_save_all_existing_statuses
+from lib.common import logger
+from lib.db import Status
 from lib.jinjaenv import JINJAENV
-from lib.logger import logger
+from lib.statuses import parse_and_save_all_existing_statuses
 
 def generate_page(template, path, **kwargs):
     logger.info(f'generating {path}')
     if isinstance(template, str):
         template = JINJAENV.get_template(template)
-    path = os.path.join(config.builddir, path)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    path = config.values.build_dir / path
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w') as fp:
         fp.write(template.render(**kwargs))
 
 def generate_index():
-    os.makedirs(config.builddir, exist_ok=True)
-    indexpath = os.path.join(config.builddir, 'index.html')
-    if os.path.islink(indexpath) and os.readlink(indexpath) == '1.html':
+    indexpath = config.values.build_dir / 'index.html'
+    if indexpath.is_symlink() and os.readlink(indexpath) == '1.html':
         return
-    elif os.path.exists(indexpath):
-        os.remove(indexpath)
+    elif indexpath.exists():
+        indexpath.unlink()
     logger.info('linking index.html => 1.html')
-    os.symlink('1.html', indexpath)
+    indexpath.symlink_to('1.html')
 
 def generate_all(statuses):
     with jinjaenv.setglobal('LAZYLOAD', True):
@@ -41,12 +42,12 @@ def generate_inf(statuses):
     generate_page(
         'inf.html', 'inf.html',
         total_statuses=total_statuses,
-        total_pages=(total_statuses - 1) // config.statuses_per_page + 1,
+        total_pages=(total_statuses - 1) // config.values.statuses_per_page + 1,
     )
 
 def generate_paginated(statuses):
     total = len(statuses)
-    per_page = config.statuses_per_page
+    per_page = config.values.statuses_per_page
     page_count = (total - 1) // per_page + 1
     for page in range(1, page_count + 1):
         generate_page('paginated.html', f'{page}.html',
@@ -56,20 +57,25 @@ def generate_paginated(statuses):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--parse', action='store_true',
-                        help='parse saved statuses on disk and (re-)populate database')
+    add = parser.add_argument
+    add('-p', '--parse', action='store_true',
+        help='parse saved statuses on disk and (re-)populate database')
+    add('config_file', type=pathlib.Path)
     args = parser.parse_args()
 
+    config.load(args.config_file)
+    jinjaenv.init()
     if args.parse:
         parse_and_save_all_existing_statuses()
 
-    statuses = filter_statuses(Status.select().order_by(Status.created_at.desc()))
-    logger.info(f'generating site in {config.builddir}')
+    statuses = Status.select().order_by(Status.created_at.desc())
+    build_dir = config.values.build_dir
+    build_dir.mkdir(parents=True, exist_ok=True)
+    logger.info(f'generating site in {build_dir}')
     generate_index()
     generate_all(statuses)
     generate_inf(statuses)
     generate_paginated(statuses)
-    # generate_gallery(statuses)
     generate_page('not-found.html', 'not-found.html')
 
 if __name__ == '__main__':

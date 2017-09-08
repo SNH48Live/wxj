@@ -1,10 +1,23 @@
 #!/usr/bin/env python3
 
+import urllib.parse
+
 from . import config
 
-def localimgpath(filename, res):
-    return config.asset_path(f'images/{res}/{filename}')
+def site_path(path):
+    if path.startswith('/'):
+        path = path[1:]
+    return urllib.parse.urljoin(config.values.site_root, path)
 
-def sinaimgpath(filename, res):
-    subdomain = 'ww' + str(sum(map(ord, filename)) % 4 + 1)
+def asset_path(path):
+    # Always interpret path as relative.
+    if path.startswith('/'):
+        path = path[1:]
+    return site_path(urllib.parse.urljoin('/assets/', path))
+
+def local_image_path(filename, res):
+    return asset_path(f'images/{res}/{filename}')
+
+def sina_image_path(filename, res):
+    subdomain = f'ww{hash(filename) % 4 + 1}'
     return f'http://{subdomain}.sinaimg.cn/{res}/{filename}'
