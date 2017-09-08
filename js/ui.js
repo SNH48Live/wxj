@@ -13,8 +13,7 @@ $(function () {
   var hasTouchSupport = ('ontouchstart' in window) ||
       window.DocumentTouch && document instanceof window.DocumentTouch
 
-  var isHome = window.location.pathname.match(/\/(index(\.html)?)?/)
-  var isInf = window.location.pathname.match(/\/inf(\.html)?/)
+  var isHome = window.location.pathname.match(/\/(index(\.html)?)?$/)
 
   $.fn.extend({
     onScreen: function () {
@@ -96,8 +95,8 @@ $(function () {
     placeholder: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=='
   })
 
-  // Scroll to last recorded position (except on / and /inf)
-  if (!isHome && !isInf) {
+  // Scroll to last recorded position (except on /)
+  if (!isHome) {
     $window.scrollTop(Cookies.get('scroll'))
   }
 
@@ -255,7 +254,7 @@ $(function () {
   })
 
   // Page specific
-  if (isInf) {
+  if (isHome) {
     ;(function () {
       const totalPages = window.totalPages
       if (!totalPages > 0) {
@@ -293,7 +292,8 @@ $(function () {
           $dummy.find('main hr').last().nextAll().remove()
           $dummy.find('.status').initStatus()
 
-          if (changeHash) {
+          // Do not change hash to #1 on the initial page
+          if (changeHash && page !== 1) {
             window.location.hash = `#${page}`
           }
 
