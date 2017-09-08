@@ -1,2 +1,3 @@
-- `m.weibo.cn-*.png` emojis are extracted from aggregate images used on `m.weibo.cn`;
-- Most other images are from the Weibo iOS app, in `Weibo.app/Emoticons.bundle/com.sina.normal` subdirectory (unpack the .ipa file first).
+- Some emojis were imported from momo.snh48live.org, which I collected along the way;
+- Most emojis were extracted from `Weibo intl. 2.6.7.ipa` using [this script](https://gist.github.com/zmwangx/f000d992ae2099c470b8ec98bc87b37a) (one can also extract from `Weibo.app/Emoticons.bundle` inside the regular `Weibo.ipa`, but the international version contains more);
+- Some old emojis were extracted from [`data/emojis.json` in `dudubaby/source.dudubaby.org`](https://github.com/dudubaby/source.dudubaby.org/blob/master/data/emojis.json); note that in some cases I deliberately replaced old-style emojis with new-style ones for consistency.
