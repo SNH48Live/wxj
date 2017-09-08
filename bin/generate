@@ -3,6 +3,8 @@
 import argparse
 import os
 import pathlib
+import shlex
+import subprocess
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -61,6 +63,24 @@ def generate_paginated(statuses):
                       statuses=statuses[per_page * (page - 1): per_page * page])
 
 
+def run(cmd):
+    print(' '.join(shlex.quote(str(arg)) for arg in cmd))
+    subprocess.run(cmd)
+
+
+def sync_assets():
+    build_dir = config.values.build_dir
+    assets_dir = build_dir / 'assets'
+    assets_dir.mkdir(parents=True, exist_ok=True)
+    for subdir in ('audio', 'css', 'images', 'js'):
+        exclude_list = ['.gitignore', 'README.md']
+        if subdir == 'images' and not config.values.local_images:
+            exclude_list.extend(('images/large', 'images/thumb*'))
+        run(['rsync', '-avP', f'--link-dest={ROOT}'] +
+            [f'--exclude={pattern}' for pattern in exclude_list] +
+            [ROOT / subdir, assets_dir])
+
+
 def main():
     parser = argparse.ArgumentParser()
     add = parser.add_argument
@@ -83,6 +103,8 @@ def main():
     generate_inf(statuses)
     generate_paginated(statuses)
     generate_page('not-found.html', 'not-found.html')
+
+    sync_assets()
 
 
 if __name__ == '__main__':

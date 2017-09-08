@@ -1,0 +1,7 @@
+site_root: /local/
+
+build_dir: public/local
+
+local_images: true
+
+statuses_per_page: 20

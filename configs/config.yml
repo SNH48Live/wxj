@@ -1,0 +1,5 @@
+build_dir: public
+
+local_images: false
+
+statuses_per_page: 20
