@@ -30,7 +30,7 @@ def mention_repl(m):
     mention = m.group(2)
     quoted_screen_name = urllib.parse.quote(mention[1:])
     repost_mention_post = m.group(3)
-    marked_up_mention = f'<a href="https://m.weibo.cn/n/{quoted_screen_name}" target="_blank">{mention}</a>'
+    marked_up_mention = f'<a href="https://m.weibo.cn/n/{quoted_screen_name}" target="_blank">{mention}</a>'  # noqa
     if repost_mention_pre and repost_mention_post:
         # A repost mention like '//@SNH48-王晓佳:'
         # We replace the ASCII colon with a FULLWIDTH COLON (U+FF1A).
@@ -55,7 +55,7 @@ def tcn_link_repl(m):
     shorturl = m.group(0)
     url = shortlinks.resolve(shorturl)
     display = shortlinks.display_url(url)
-    return f'<a href="{url}" data-canonical-href="{shorturl}" target="_blank">{html.escape(display)}</a>'
+    return f'<a href="{url}" data-canonical-href="{shorturl}" target="_blank">{html.escape(display)}</a>'  # noqa
 
 
 def markup_status_body(body):

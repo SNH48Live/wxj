@@ -1,0 +1,41 @@
+#!/usr/bin/env zsh
+
+here=$0:A:h
+root=$here:h
+cd $root
+
+qa () {
+    print "\e[34m$1\e[0m"
+    if [[ $1 =~ lib.([a-zA-Z0-9_]*) ]]; then
+        file=lib/$match[1].py
+        module=$1
+    else
+        file=bin/$1
+        module=bin/$1
+    fi
+    flake8 $file
+    pylint --score=n $module | grep -v '************* Module'
+}
+
+[[ $1 == (-h|--help) ]] && {
+    cat >&2 <<EOF
+Usage: $0:t [module [module...]]
+
+module could be a lib.* module, or a filename in bin/.
+EOF
+    exit
+}
+
+if (( $# > 0 )); then
+    for module; do
+        qa $module
+    done
+else
+    for file in bin/*(.); do
+        [[ $file == *.py ]] || head -1 $file | grep -q python || continue
+        qa $file:t
+    done
+    for module in lib/*.py; do
+        qa lib.$module:t:r
+    done
+fi
