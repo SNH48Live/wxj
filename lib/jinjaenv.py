@@ -15,8 +15,10 @@ JINJAENV = jinja2.Environment(
 GLOBALS = JINJAENV.globals
 FILTERS = JINJAENV.filters
 
+
 def init():
     GLOBALS['LOCAL_IMAGES'] = config.values.local_images
+
 
 @contextmanager
 def setglobal(name, value):
@@ -34,12 +36,15 @@ def setglobal(name, value):
     else:
         del GLOBALS[name]
 
+
 def markup(text):
     text = emojis.markup_emojis(text)
     return text
 
+
 def strftime(timestamp):
     return arrow.get(timestamp).to('Asia/Shanghai').strftime('%Y-%m-%d %H:%M:%S')
+
 
 FILTERS['assetpath'] = utils.asset_path
 FILTERS['localimgpath'] = utils.local_image_path

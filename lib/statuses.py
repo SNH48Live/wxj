@@ -11,6 +11,7 @@ from . import api, config, images, shortlinks
 from .common import logger
 from .db import Status
 
+
 def parse_status_images(status):
     if 'pic_urls' in status:
         status_images = [os.path.basename(url) for url in status['pic_urls']]
@@ -20,7 +21,9 @@ def parse_status_images(status):
     else:
         return ''
 
+
 MENTION = re.compile(r'(//)?(@[^:：\s]+)([:：])?')
+
 
 def mention_repl(m):
     repost_mention_pre = m.group(1)
@@ -35,14 +38,18 @@ def mention_repl(m):
     else:
         return marked_up_mention
 
+
 TAG = re.compile(r'#([^#\s]+)#')
+
 
 def tag_repl(m):
     tag = m.group(1)
     quoted_tag = urllib.parse.quote(tag)
     return f'<a href="https://m.weibo.cn/k/{quoted_tag}" target="_blank">#{tag}#</a>'
 
+
 TCN_LINK = re.compile(r'http://t\.cn/\w+')
+
 
 def tcn_link_repl(m):
     shorturl = m.group(0)
@@ -50,13 +57,16 @@ def tcn_link_repl(m):
     display = shortlinks.display_url(url)
     return f'<a href="{url}" data-canonical-href="{shorturl}" target="_blank">{html.escape(display)}</a>'
 
+
 def markup_status_body(body):
     body = MENTION.sub(mention_repl, body)
     body = TAG.sub(tag_repl, body)
     body = TCN_LINK.sub(tcn_link_repl, body)
     return body
 
+
 MWEIBOCN_STATUS_LINK = re.compile(r'^https?://m\.weibo\.cn/status/(?P<basename>\w+)(\?.*)?')
+
 
 def parse_and_save_status(json_):
     status = {}
@@ -87,6 +97,7 @@ def parse_and_save_status(json_):
     status, new = Status.get_or_create(status_id=status_id, defaults=status)
     if new:
         logger.info(f'inserted status {status_id} into database')
+
 
 def parse_and_save_all_existing_statuses():
     for status_id in api.list_existing_status_ids():

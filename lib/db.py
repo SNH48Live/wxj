@@ -8,6 +8,7 @@ from .common import DATADIR
 DBPATH = DATADIR / 'data.db'
 db = peewee.SqliteDatabase(os.fspath(DBPATH))
 
+
 class Status(peewee.Model):
     status_id = peewee.IntegerField(unique=True)
     created_at = peewee.IntegerField()
@@ -20,6 +21,7 @@ class Status(peewee.Model):
 
     class Meta:
         database = db
+
 
 db.connect()
 db.create_table(Status, safe=True)

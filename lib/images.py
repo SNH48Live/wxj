@@ -13,6 +13,7 @@ THUMBNAILER = TOOLSDIR / 'thumbnail'
 
 image_processing_pool = None
 
+
 def ensure_sinaimg(basename):
     for res in ['large', 'thumb180']:
         directory = IMAGESDIR / res
@@ -46,6 +47,7 @@ def ensure_sinaimg(basename):
     # Generate thumbnails
     logger.info(f'generating thumbnails for {basename}')
     subprocess.run([THUMBNAILER, basename])
+
 
 def ensure_sinaimgs(basenames):
     global image_processing_pool

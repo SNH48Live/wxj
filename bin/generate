@@ -15,6 +15,7 @@ from lib.db import Status
 from lib.jinjaenv import JINJAENV
 from lib.statuses import parse_and_save_all_existing_statuses
 
+
 def generate_page(template, path, **kwargs):
     logger.info(f'generating {path}')
     if isinstance(template, str):
@@ -23,6 +24,7 @@ def generate_page(template, path, **kwargs):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w') as fp:
         fp.write(template.render(**kwargs))
+
 
 def generate_index():
     indexpath = config.values.build_dir / 'index.html'
@@ -33,9 +35,11 @@ def generate_index():
     logger.info('linking index.html => 1.html')
     indexpath.symlink_to('1.html')
 
+
 def generate_all(statuses):
     with jinjaenv.setglobal('LAZYLOAD', True):
         generate_page('all.html', 'all.html', statuses=statuses)
+
 
 def generate_inf(statuses):
     total_statuses = len(statuses)
@@ -45,6 +49,7 @@ def generate_inf(statuses):
         total_pages=(total_statuses - 1) // config.values.statuses_per_page + 1,
     )
 
+
 def generate_paginated(statuses):
     total = len(statuses)
     per_page = config.values.statuses_per_page
@@ -53,7 +58,8 @@ def generate_paginated(statuses):
         generate_page('paginated.html', f'{page}.html',
                       page=page,
                       total_pages=page_count,
-                      statuses=statuses[per_page*(page-1):per_page*page])
+                      statuses=statuses[per_page * (page - 1): per_page * page])
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -77,6 +83,7 @@ def main():
     generate_inf(statuses)
     generate_paginated(statuses)
     generate_page('not-found.html', 'not-found.html')
+
 
 if __name__ == '__main__':
     main()

@@ -7,6 +7,7 @@ import yaml
 
 from .common import ROOT, logger
 
+
 class Config(object):
     def __init__(self):
         self.site_root = None
@@ -14,7 +15,9 @@ class Config(object):
         self.local_images = None
         self.statuses_per_page = None
 
+
 values = Config()
+
 
 def load(config_file):
     config_file = pathlib.Path(config_file)
