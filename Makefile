@@ -1,6 +1,10 @@
-.PHONY: default site assets bower css js
+.PHONY: default prereqs site assets bower css js
 
 default: site
+
+prereqs:
+	pip install -r requirements.txt
+	yarn install
 
 site: assets
 	bin/generate -p configs/config.yml
