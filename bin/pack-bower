@@ -11,7 +11,7 @@ cd $root
 js_output=$root/js/bower_packed.js
 js_map_path=$root/js/bower_packed.js.map
 js_map_relative_path=bower_packed.js.map
-yarn run uglifyjs -- \
+yarn run uglifyjs \
     $bower/jquery/dist/jquery.js \
     $bower/fancybox/dist/jquery.fancybox.js \
     $bower/jquery_lazyload/jquery.lazyload.js \
@@ -25,4 +25,4 @@ yarn run uglifyjs -- \
 css_output=$root/css/bower_packed.css
 cat $bower/normalize-css/normalize.css \
     $bower/fancybox/dist/jquery.fancybox.css \
-    | yarn run cleancss -- -o $css_output
+    | yarn run cleancss -o $css_output
