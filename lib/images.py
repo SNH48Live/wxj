@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import atexit
 import multiprocessing.pool
 import random
