@@ -24,4 +24,4 @@ def local_image_path(filename, res):
 
 def sina_image_path(filename, res):
     subdomain = f'ww{hash(filename) % 4 + 1}'
-    return f'http://{subdomain}.sinaimg.cn/{res}/{filename}'
+    return f'https://{subdomain}.sinaimg.cn/{res}/{filename}'

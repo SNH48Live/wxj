@@ -22,7 +22,7 @@ def ensure_sinaimg(basename):
         if localpath.exists():
             continue
         rand = random.randrange(1, 5)
-        url = f'http://ww{rand}.sinaimg.cn/{res}/{basename}'
+        url = f'https://ww{rand}.sinaimg.cn/{res}/{basename}'
         logger.info(f'downloading {url}')
         try:
             resp = requests.get(url, stream=True)
