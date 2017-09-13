@@ -19,7 +19,7 @@ yarn run uglifyjs \
     $bower/jquery-throttle-debounce/jquery.ba-throttle-debounce.js \
     $bower/mousetrap/mousetrap.js \
     $bower/mousetrap/plugins/pause/mousetrap-pause.js \
-    -c -m \
+    -c -m --ie8 \
     -o $js_output
 
 css_output=$root/css/bower_packed.css

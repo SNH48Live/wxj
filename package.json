@@ -1,8 +1,28 @@
 {
   "license": "MIT",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-minify": "^0.2.0",
+    "babel-preset-env": "^1.6.0",
     "clean-css-cli": "^4.1.9",
     "stylus": "^0.54.5",
     "uglify-js": "^3.0.28"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "> 1% in CN",
+              "ie 8",
+              "safari 9"
+            ]
+          }
+        }
+      ],
+      "minify"
+    ]
   }
 }

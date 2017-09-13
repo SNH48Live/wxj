@@ -16,12 +16,15 @@ assets: bower css js
 
 bower: js/bower_packed.js css/bower_packed.css
 
-js/bower_packed.js css/bower_packed.css: bower_components/**/*
+js/bower_packed.js css/bower_packed.css: bower_components/**/* bin/pack-bower
 	bin/pack-bower
 
-css: css/theme.css
+css: css/theme.min.css
 
-css/theme.css: css/theme.styl
-	yarn run stylus -- -m css/theme.styl -o css/theme.css
+css/theme.min.css: css/theme.styl
+	yarn run stylus -c -m css/theme.styl -o css/theme.min.css
 
-js: js/ui.js
+js: js/ui.min.js
+
+js/ui.min.js: js/ui.js
+	yarn run babel js/ui.js -s -o js/ui.min.js
