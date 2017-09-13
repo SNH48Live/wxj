@@ -9,6 +9,7 @@
 {% include '_header.html' %}
   <main class="content">
     <h1>天草应援纪念馆</h1>
+    <script>window.totalPages = {{ total_pages }}; window.currentPage = {{ page }}</script>
     {%- set info_text %}第{{ page }}/{{ total_pages }}页{%- endset %}
     {%- set first_text %}首{% endset %}
     {%- set first_link %}{{ page_link(1) }}{% endset %}

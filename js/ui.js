@@ -14,6 +14,7 @@ $(function () {
       window.DocumentTouch && document instanceof window.DocumentTouch
 
   var isHome = window.location.pathname.match(/\/(index(\.html)?)?$/)
+  var isPaginated = window.location.pathname.match(/\/\d+(\.html)?$/)
 
   $.fn.extend({
     onScreen: function () {
@@ -382,6 +383,35 @@ $(function () {
         }
       })()
     })()
+  }
+
+  if (isPaginated) {
+    // Add page switcher
+    const totalPages = window.totalPages
+    if (!totalPages > 0) {
+      throw new Error('window.totalPages not found.')
+    }
+    delete window.totalPages
+    const currentPage = window.currentPage
+    if (!currentPage > 0) {
+      throw new Error('window.currentPage not found.')
+    }
+    delete window.currentPage
+    var innerHtml = '第 '
+    innerHtml += '<select name="page">'
+    for (var i = 1; i <= totalPages; i++) {
+      if (i === currentPage) {
+        innerHtml +=`<option value="${i}" selected>${i}</option>`
+      } else {
+        innerHtml +=`<option value="${i}">${i}</option>`
+      }
+    }
+    innerHtml += '</select>'
+    innerHtml += ` /${totalPages}页`
+    $('.info-nav-bar .left').html(innerHtml)
+    $('.info-nav-bar .left select').change(function () {
+      window.location.href = this.value.toString()
+    })
   }
 
   // Keyboard shortcuts
