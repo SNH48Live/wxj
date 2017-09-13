@@ -397,20 +397,17 @@ $(function () {
       throw new Error('window.currentPage not found.')
     }
     delete window.currentPage
-    var innerHtml = '第 '
-    innerHtml += '<select name="page">'
-    for (var i = 1; i <= totalPages; i++) {
-      if (i === currentPage) {
-        innerHtml +=`<option value="${i}" selected>${i}</option>`
-      } else {
-        innerHtml +=`<option value="${i}">${i}</option>`
-      }
-    }
-    innerHtml += '</select>'
-    innerHtml += ` /${totalPages}页`
+    var innerHtml = `<form>
+第 <input type="text" name="page" pattern="\\d+" value=${currentPage} title="仅限页码"> /${totalPages}页
+<input type="submit" hidden>
+</form>`
     $('.info-nav-bar .left').html(innerHtml)
-    $('.info-nav-bar .left select').change(function () {
-      window.location.href = this.value.toString()
+    $('.info-nav-bar .left form').submit(function (e) {
+      var targetPage = parseInt($(this).find('input[name=page]').val())
+      if (targetPage >= 1 && targetPage <= totalPages) {
+        window.location.href = targetPage.toString()
+      }
+      e.preventDefault()
     })
   }
 
