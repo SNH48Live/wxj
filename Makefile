@@ -1,4 +1,4 @@
-.PHONY: default prereqs site assets bower css js
+.PHONY: default prereqs site assets bower css js data
 
 default: site
 
@@ -28,3 +28,8 @@ js: js/ui.min.js
 
 js/ui.min.js: js/ui.js
 	yarn run babel js/ui.js -s -o js/ui.min.js
+
+data:
+	- $(RM) api/*.json data/data.db
+	tools/parse-raw-data
+	bin/generate --parse-only configs/config.yml

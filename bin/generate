@@ -76,13 +76,18 @@ def main():
     add = parser.add_argument
     add('-p', '--parse', action='store_true',
         help='parse saved statuses on disk and (re-)populate database')
+    add('--parse-only', action='store_true',
+        help='parse saved statuses but do not generate pages; implies --parse')
     add('config_file', type=pathlib.Path)
     args = parser.parse_args()
+    args.parse = args.parse or args.parse_only
 
     config.load(args.config_file)
     jinjaenv.init()
     if args.parse:
         parse_and_save_all_existing_statuses()
+    if args.parse_only:
+        sys.exit(0)
 
     statuses = Status.select().order_by(Status.created_at.desc())
     build_dir = config.values.build_dir
