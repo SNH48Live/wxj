@@ -77,7 +77,10 @@ def sync_assets():
     build_dir = config.values.build_dir
     assets_dir = build_dir / 'assets'
     assets_dir.mkdir(parents=True, exist_ok=True)
-    for subdir in ('audio', 'css', 'images', 'js'):
+    subdirs = ('css', 'images', 'js')
+    if config.values.sync_audio:
+        subdirs.append('audio')
+    for subdir in subdirs:
         exclude_list = ['.gitignore', 'README.md']
         if subdir == 'images' and not config.values.local_images:
             exclude_list.extend(('images/large', 'images/thumb*'))

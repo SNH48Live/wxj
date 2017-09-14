@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 from contextlib import contextmanager
 
 import arrow
@@ -16,6 +17,7 @@ FILTERS = JINJAENV.filters
 
 def init():
     GLOBALS['LOCAL_IMAGES'] = config.values.local_images
+    GLOBALS['AUDIO_PREFIXES'] = utils.audio_prefixes()
 
 
 @contextmanager
@@ -50,3 +52,4 @@ FILTERS['markup'] = markup
 FILTERS['sinaimgpath'] = utils.sina_image_path
 FILTERS['sitepath'] = utils.site_path
 FILTERS['strftime'] = strftime
+FILTERS['urljoin'] = urllib.parse.urljoin

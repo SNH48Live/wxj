@@ -16,6 +16,16 @@ def asset_path(path):
     return site_path(urllib.parse.urljoin('/assets/', path))
 
 
+# Support for audio mirroring.
+def audio_prefixes():
+    if config.values.audio_prefixes:
+        prefixes = config.values.audio_prefixes
+    else:
+        prefixes = [asset_path('audio')]
+    prefixes = [f'{prefix}/' if not prefix.endswith('/') else prefix for prefix in prefixes]
+    return prefixes
+
+
 def local_image_path(filename, res):
     return asset_path(f'images/{res}/{filename}')
 

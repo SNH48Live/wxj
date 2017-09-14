@@ -3,3 +3,10 @@ build_dir: public
 local_images: false
 
 statuses_per_page: 20
+
+# Use external services for audio to save bandwidth
+sync_audio: false
+
+audio_prefixes:
+- http://ow9op3tf8.bkt.clouddn.com/
+- https://snh48live.github.io/wxjaudio/

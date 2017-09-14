@@ -12,6 +12,8 @@ class Config(object):
         self.build_dir = None
         self.local_images = None
         self.statuses_per_page = None
+        self.sync_audio = True
+        self.audio_prefixes = []
 
 
 values = Config()
@@ -35,3 +37,5 @@ def load(config_file):
         values.build_dir = ROOT / values.build_dir
     values.local_images = config.get('local_images', True)
     values.statuses_per_page = config.get('statuses_per_page', 20)
+    values.sync_audio = config.get('sync_audio', True)
+    values.audio_prefixes = config.get('audio_prefixes', [])
