@@ -4,6 +4,7 @@ import argparse
 import os
 import pathlib
 import shlex
+import shutil
 import subprocess
 import sys
 
@@ -12,7 +13,7 @@ ROOT = HERE.parent
 sys.path.insert(0, os.fspath(ROOT))
 
 from lib import config, jinjaenv
-from lib.common import logger
+from lib.common import IMAGESDIR, logger
 from lib.db import Status
 from lib.jinjaenv import JINJAENV
 from lib.statuses import parse_and_save_all_existing_statuses
@@ -51,6 +52,20 @@ def generate_paginated(statuses):
 def generate_all(statuses):
     with jinjaenv.setglobal('LAZYLOAD', True):
         generate_page('all.html', 'all.html', statuses=statuses)
+
+
+def copy_favicons():
+    for filename in ('favicon.ico', 'apple-touch-icon.png'):
+        src = IMAGESDIR / 'icons' / filename
+        if not src.exists():
+            logger.error(f'{src} not found')
+            continue
+        dst = config.values.build_dir / filename
+        shutil.copyfile(src, dst)
+
+    if config.values.site_root != '/':
+        logger.warning('You need to manually move favicon.ico and apple-touch-icon.png '
+                       'to the actual site root.')
 
 
 def run(cmd):
@@ -99,6 +114,7 @@ def main():
     generate_page('not-found.html', 'not-found.html')
 
     sync_assets()
+    copy_favicons()
 
 
 if __name__ == '__main__':
