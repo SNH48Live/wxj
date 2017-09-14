@@ -84,7 +84,11 @@ def parse_and_save_status(json_):
         status['repost'] = True
         retweeted_status = json_['retweeted_status']
         if retweeted_status and 'text' in retweeted_status:
-            orig_author = retweeted_status['user']['screen_name']
+            try:
+                orig_author = retweeted_status['user']['screen_name']
+            except TypeError:
+                # api/3991289312027273.json has "user": [] for whatever reason
+                orig_author = '未知用户'
             # TODO: if truncated, resolve complete status
             orig_body = markup_status_body(retweeted_status['text'])
             status['orig_body'] = f'<b>{orig_author}：</b>{orig_body}'
