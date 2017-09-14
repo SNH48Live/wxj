@@ -18,6 +18,7 @@ FILTERS = JINJAENV.filters
 def init():
     GLOBALS['LOCAL_IMAGES'] = config.values.local_images
     GLOBALS['AUDIO_PREFIXES'] = utils.audio_prefixes()
+    GLOBALS['BAIDU_TRACKER_ID'] = config.values.baidu_tracker_id
 
 
 @contextmanager

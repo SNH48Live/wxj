@@ -16,6 +16,12 @@ $(function () {
   var isHome = window.location.pathname.match(/\/(index(\.html)?)?$/)
   var isPaginated = window.location.pathname.match(/\/\d+(\.html)?$/)
 
+  if (window.baiduTrackerId) {
+    var trackingScriptUrl = `https://hm.baidu.com/hm.js?${window.baiduTrackerId}`
+    delete window.baiduTrackerId
+    $.getScript(trackingScriptUrl)
+  }
+
   $.fn.extend({
     onScreen: function () {
       if (this.length === 0) {

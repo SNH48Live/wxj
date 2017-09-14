@@ -14,6 +14,7 @@ class Config(object):
         self.statuses_per_page = None
         self.sync_audio = True
         self.audio_prefixes = []
+        self.baidu_tracker_id = None
 
 
 values = Config()
@@ -39,3 +40,4 @@ def load(config_file):
     values.statuses_per_page = config.get('statuses_per_page', 20)
     values.sync_audio = config.get('sync_audio', True)
     values.audio_prefixes = config.get('audio_prefixes', [])
+    values.baidu_tracker_id = config.get('baidu_tracker_id')

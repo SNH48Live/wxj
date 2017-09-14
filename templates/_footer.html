@@ -1,3 +1,6 @@
+  {% if BAIDU_TRACKER_ID -%}
+  <script>window.baiduTrackerId = '{{ BAIDU_TRACKER_ID }}'</script>
+  {% endif -%}
 </body>
 </html>
 

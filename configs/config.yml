@@ -10,3 +10,5 @@ sync_audio: false
 audio_prefixes:
 - http://ow9op3tf8.bkt.clouddn.com/
 - https://snh48live.github.io/wxjaudio/
+
+baidu_tracker_id: 79a7383da88eb91beaa12e87814b664d
