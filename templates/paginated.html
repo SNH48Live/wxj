@@ -1,6 +1,6 @@
 {%- set title -%}第{{ page }}页{%- endset -%}
 
-{%- from '_macros.html' import info_nav_bar, status_list with context -%}
+{%- from '_macros.html' import full_title, info_nav_bar, status_list with context -%}
 
 {%- macro page_link(page) -%}
   {{ ('/%d' % page)|sitepath }}
@@ -8,7 +8,7 @@
 
 {% include '_header.html' %}
   <main class="content">
-    <h1>天草应援纪念馆</h1>
+    {{ full_title()|indent(4) }}
     <script>window.totalPages = {{ total_pages }}; window.currentPage = {{ page }}</script>
     {%- set info_text %}第{{ page }}/{{ total_pages }}页{%- endset %}
     {%- set first_text %}首{% endset %}

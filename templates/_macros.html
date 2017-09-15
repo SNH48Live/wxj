@@ -1,3 +1,10 @@
+{%- macro full_title() -%}
+<hgroup id="title">
+  <h1>天草应援纪念馆</h1>
+  <h2>SNH48王晓佳应援会历史记录</h2>
+</hgroup>
+{%- endmacro -%}
+
 {%- macro _info_nav_bar_nav_element(type, text, link) -%}
 <span class="info-nav-bar-nav {{ type }}">
   {%- if link -%}<a href="{{ link }}">{%- endif -%}
