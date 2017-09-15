@@ -114,6 +114,7 @@ def main():
     generate_index(statuses)
     generate_paginated(statuses)
     generate_all(statuses)
+    generate_page('about.html', 'about.html')
     generate_page('about-her.html', 'about-her.html')
     generate_page('not-found.html', 'not-found.html')
 
