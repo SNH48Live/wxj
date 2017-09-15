@@ -4,6 +4,10 @@ highlight-bg-color = hsl(72, 78%, 85%)
 orig-status-bg-color = hsl(72, 78%, 70%)
 hr-color = hsl(72, 78%, 45%)
 img-placeholder-color = hsl(72, 78%, 55%)
+article-link-color = hsl(72, 78%, 40%)
+article-blockquote-color = hsl(72, 78%, 70%)
+article-table-border-color = hsl(72, 78%, 40%)
+article-table-key-background = hsl(72, 78%, 70%)
 dim-color = #888
 translucent = rgba(255, 255, 255, 0.5)  // Use 50% transparency to emulate translucency
 font = 16px "Times New Roman", Times, "Songti SC", SimSum, serif
@@ -37,6 +41,9 @@ body
 h1
   text-align center
   font-size 140%
+
+h2
+  font-size 120%
 
 a
   color inherit
@@ -75,7 +82,7 @@ img
 nav
   position fixed
   left calc(50% + 360px)
-  top calc(50% - 56px)
+  top calc(50% - 70px)
   font-size 110%
   line-height 160%
   color nav-text-color
@@ -181,6 +188,35 @@ fancybox-button-before-svg(filename, size)
   to
     width 1.5em
 
+main.article
+  p
+    margin 0.5em 0
+  blockquote
+    background article-blockquote-color
+    padding 0.5em 1em
+    margin 0.5em 0
+  a
+    border none
+    color article-link-color
+  hr
+    margin 0
+  table
+    margin 0.5em 0
+    border-collapse collapse
+    border 1px solid article-table-border-color
+    th, td
+      border 1px solid article-table-border-color
+      padding 1px 3px
+    th.key, td.key
+      background article-table-key-background
+      min-width 4em
+  img.portrait
+    float right
+    // Override background color of e.g. blockquote around the image
+    padding 0 0 10px 10px
+    background bg-color
+    z-index 1
+
 #audio-control
   position fixed
   left calc(50% + 366px)
@@ -237,6 +273,8 @@ fancybox-button-before-svg(filename, size)
         border-top solid 1px translucent
         background mobile-nav-bg-color
         background-clip padding-box
+  main.article
+    margin 0 10px
   #audio-control
     left initial
     bottom initial
