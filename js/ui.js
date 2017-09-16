@@ -11,7 +11,7 @@ $(function () {
 
   // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/touchevents.js
   var hasTouchSupport = ('ontouchstart' in window) ||
-      window.DocumentTouch && document instanceof window.DocumentTouch
+      (window.DocumentTouch && document instanceof window.DocumentTouch)
 
   var isHome = window.location.pathname.match(/\/(index(\.html)?)?$/)
   var isPaginated = window.location.pathname.match(/\/\d+(\.html)?$/)
@@ -19,6 +19,7 @@ $(function () {
   if (window.baiduTrackerId) {
     var trackingScriptUrl = `https://hm.baidu.com/hm.js?${window.baiduTrackerId}`
     delete window.baiduTrackerId
+    $.ajaxSetup({ cache: true })  // hm.baidu.com/hm.js does not work with a timestamp paramter
     $.getScript(trackingScriptUrl)
   }
 
