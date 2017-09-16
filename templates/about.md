@@ -38,3 +38,7 @@
 SNH48 Live：<https://snh48live.org/>
 
 （致力于搬运SNH48公演官方录播的YouTube频道）
+
+## 源代码
+
+网站源代码见[GitHub](https://github.com/SNH48Live/wxj)。
