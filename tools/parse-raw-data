@@ -8,12 +8,14 @@ import pathlib
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
-RAW_DATA_FILE = ROOT / 'raw' / 'data.json'
-MID_BLACKLIST_FILE = ROOT / 'raw' / 'blacklist.txt'
+RAW_DATA_DIR = ROOT / 'raw'
+RAW_MAIN_DATA_FILE = RAW_DATA_DIR / 'main.json'
+RAW_LONGTEXT_FILE = RAW_DATA_DIR / 'longtext.json'
+MID_BLACKLIST_FILE = RAW_DATA_DIR / 'blacklist.txt'
 PARSED_DATA_DIR = ROOT / 'api'
 
 
-def parse(raw_data, blacklist):
+def parse_main(raw_data, blacklist):
     for status in raw_data:
         mid = status['mid']
         if mid in blacklist:
@@ -22,21 +24,26 @@ def parse(raw_data, blacklist):
             json.dump(status, fp, ensure_ascii=False, indent=2)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('raw_data_file', nargs='?', default=RAW_DATA_FILE,
-                        help='''the raw data file (containing list of statuses)
-                        to be parsed, defaulting to raw/data.json''')
-    parser.add_argument('blacklist_file', nargs='?', default=MID_BLACKLIST_FILE,
-                        help='''the status id blacklist, with one status
-                        id per line, defaulting to raw/blacklist.txt''')
-    args = parser.parse_args()
+def parse_longtext(raw_data):
+    data = collections.OrderedDict()
+    for uid_mid in raw_data:
+        mid = uid_mid.split('/')[1]
+        msg = raw_data[uid_mid]['msg']
+        if msg:
+            data[mid] = msg
+    with open(PARSED_DATA_DIR / 'longtext.json', 'w') as fp:
+        json.dump(data, fp, ensure_ascii=False, indent=2)
 
-    with open(args.blacklist_file) as fp:
+
+def main():
+    with open(MID_BLACKLIST_FILE) as fp:
         blacklist = [line.strip() for line in fp]
-    with open(args.raw_data_file) as fp:
-        raw_data = json.load(fp, object_pairs_hook=collections.OrderedDict)
-        parse(raw_data, blacklist)
+    with open(RAW_MAIN_DATA_FILE) as fp:
+        raw_main_data = json.load(fp, object_pairs_hook=collections.OrderedDict)
+        parse_main(raw_main_data, blacklist)
+    with open(RAW_LONGTEXT_FILE) as fp:
+        raw_longtext_data = json.load(fp, object_pairs_hook=collections.OrderedDict)
+        parse_longtext(raw_longtext_data)
 
 
 if __name__ == '__main__':
