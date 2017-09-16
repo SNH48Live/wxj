@@ -4,7 +4,7 @@
 
 An archive of SNH48-王晓佳应援会's Weibo content, before its catastrophic destruction on Sep 1, 2017. The account has since been reincarnated, so to speak, but lost content could not be reclaimed on Weibo, hence this site.
 
-Disclaimer: I'm not affiliated to the group in any way. Someone reached out and asked for a favor, and I was just happy to help out.
+Disclaimer: I'm not affiliated with the group in any way. Someone reached out and asked for a favor, and I was just happy to help out.
 
 Another disclaimer: I'm not a web dev. This repo has its fair share of hacks, the stitched-together build system will make a pro web dev roll their eyes, and many things are probably far away from best practice. I know.
 
@@ -31,4 +31,10 @@ The static site is generated in `public`. You may explore the configuration file
 
 ## Credit
 
-TODO: Credit the data source, content authors, etc.
+Lost data was recovered by [@你的档案](http://weibo.com/hecaitou001) of [微博看看](http://weibo.wbdacdn.com/e) fame.
+
+Credit also goes to other parties listed on [the site's About page](http://sky-grass.com/about).
+
+## License
+
+Code is released under the MIT license. All rights reserved on textual and imagery content.
