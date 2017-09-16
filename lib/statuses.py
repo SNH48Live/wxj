@@ -1,4 +1,5 @@
 import html
+import json
 import os
 import re
 import urllib.parse
@@ -6,7 +7,7 @@ import urllib.parse
 import arrow
 
 from . import api, config, images, shortlinks
-from .common import logger
+from .common import APIDIR, logger
 from .db import Status
 
 
@@ -56,7 +57,29 @@ def tcn_link_repl(m):
     return f'<a href="{url}" data-canonical-href="{shorturl}" target="_blank">{html.escape(display)}</a>'  # noqa
 
 
+def get_longtext(status_id):
+    if get_longtext.longtexts is None:
+        with open(APIDIR / 'longtext.json') as fp:
+            get_longtext.longtexts = json.load(fp)
+
+    return get_longtext.longtexts.get(status_id)
+
+
+get_longtext.longtexts = None
+
+
+NEEDS_EXPANSION = re.compile(r'^(?P<shortened>.*)\.\.\.全文： http://m\.weibo\.cn/\d+/(?P<status_id>\d+)\s*\u200b?$', re.S)  # noqa
+
+
 def markup_status_body(body):
+    m = NEEDS_EXPANSION.match(body)
+    if m:
+        longtext = get_longtext(m.group('status_id'))
+        if longtext:
+            body = longtext
+        else:
+            # Long text not available
+            body = m.group('shortened') + '……'
     body = MENTION.sub(mention_repl, body)
     body = TAG.sub(tag_repl, body)
     body = TCN_LINK.sub(tcn_link_repl, body)
