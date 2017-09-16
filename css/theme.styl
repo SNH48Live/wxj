@@ -174,9 +174,10 @@ fancybox-button-before-svg(filename, size)
   height 44px
   position relative
   background embedurl("images/icons/"filename) center/size no-repeat
+  opacity .8
 
 .fancybox-button
-  &.fancybox-open-image:before
+  &.fancybox-button--open:before
     fancybox-button-before-svg("open.svg", 14px)
 
 .loading

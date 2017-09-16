@@ -164,13 +164,25 @@ $(function () {
         slideShow: {
           speed: 1500
         },
+        buttons : [
+          'open',
+	  'slideShow',
+	  'fullScreen',
+	  'thumbs',
+	  'close'
+	],
+        btnTpl : {
+          open: '<button data-fancybox-open class="fancybox-button fancybox-button--open" title="打开原图(O)"></button>',
+	  slideShow: '<button data-fancybox-play class="fancybox-button fancybox-button--play" title="幻灯片(P)"></button>',
+	  fullScreen: '<button data-fancybox-fullscreen class="fancybox-button fancybox-button--fullscreen" title="全屏(F)"></button>',
+	  thumbs: '<button data-fancybox-thumbs class="fancybox-button fancybox-button--thumbs" title="缩略图(G)"></button>',
+	  close: '<button data-fancybox-close class="fancybox-button fancybox-button--close" title="关闭(Esc)"></button>'
+        },
         onInit: function (instance) {
           Mousetrap.pause()
 
-          var buttons = instance.$refs.buttons
-          instance.$refs.openImageButton =
-            $('<a class="fancybox-button fancybox-open-image" target="_blank" title="Open (O)"></a>')
-            .appendTo(buttons)
+          var $openButton = instance.$refs.toolbar.find('[data-fancybox-open]')
+          $openButton.click(function () { window.open($(this).attr('data-src')) })
 
           $document.on('keypress.inside-fancybox', function (e) {
             var key = String.fromCharCode(e.which)
@@ -197,10 +209,7 @@ $(function () {
 
               case 'O':
                 // Open original image
-                var imageLink = $('a.fancybox-open-image').get(0)
-                if (imageLink) {
-                  imageLink.click()
-                }
+                $openButton.click()
                 break
 
               default:
@@ -209,8 +218,8 @@ $(function () {
             return false
           })
         },
-        beforeMove: function (instance, current) {
-          instance.$refs.openImageButton.attr('href', current.src)
+        beforeShow: function (instance, current) {
+          instance.$refs.toolbar.find('[data-fancybox-open]').attr('data-src', current.src)
         },
         beforeClose: function () {
           $document.off('keypress.inside-fancybox')
