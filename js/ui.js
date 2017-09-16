@@ -166,17 +166,17 @@ $(function () {
         },
         buttons : [
           'open',
-	  'slideShow',
-	  'fullScreen',
-	  'thumbs',
-	  'close'
-	],
+          'slideShow',
+          'fullScreen',
+          'thumbs',
+          'close'
+        ],
         btnTpl : {
           open: '<button data-fancybox-open class="fancybox-button fancybox-button--open" title="打开原图(O)"></button>',
-	  slideShow: '<button data-fancybox-play class="fancybox-button fancybox-button--play" title="幻灯片(P)"></button>',
-	  fullScreen: '<button data-fancybox-fullscreen class="fancybox-button fancybox-button--fullscreen" title="全屏(F)"></button>',
-	  thumbs: '<button data-fancybox-thumbs class="fancybox-button fancybox-button--thumbs" title="缩略图(G)"></button>',
-	  close: '<button data-fancybox-close class="fancybox-button fancybox-button--close" title="关闭(Esc)"></button>'
+          slideShow: '<button data-fancybox-play class="fancybox-button fancybox-button--play" title="幻灯片(P)"></button>',
+          fullScreen: '<button data-fancybox-fullscreen class="fancybox-button fancybox-button--fullscreen" title="全屏(F)"></button>',
+          thumbs: '<button data-fancybox-thumbs class="fancybox-button fancybox-button--thumbs" title="缩略图(G)"></button>',
+          close: '<button data-fancybox-close class="fancybox-button fancybox-button--close" title="关闭(Esc)"></button>'
         },
         onInit: function (instance) {
           Mousetrap.pause()
