@@ -7,117 +7,178 @@
 ;(function (document, $) {
 	'use strict';
 
-	var FullScreen = function( instance ) {
+	// Collection of methods supported by user browser
+	var fn = (function () {
 
-		this.instance = instance;
+		var fnMap = [
+			[
+				'requestFullscreen',
+				'exitFullscreen',
+				'fullscreenElement',
+				'fullscreenEnabled',
+				'fullscreenchange',
+				'fullscreenerror'
+			],
+			// new WebKit
+			[
+				'webkitRequestFullscreen',
+				'webkitExitFullscreen',
+				'webkitFullscreenElement',
+				'webkitFullscreenEnabled',
+				'webkitfullscreenchange',
+				'webkitfullscreenerror'
 
-		this.init();
+			],
+			// old WebKit (Safari 5.1)
+			[
+				'webkitRequestFullScreen',
+				'webkitCancelFullScreen',
+				'webkitCurrentFullScreenElement',
+				'webkitCancelFullScreen',
+				'webkitfullscreenchange',
+				'webkitfullscreenerror'
 
-	};
+			],
+			[
+				'mozRequestFullScreen',
+				'mozCancelFullScreen',
+				'mozFullScreenElement',
+				'mozFullScreenEnabled',
+				'mozfullscreenchange',
+				'mozfullscreenerror'
+			],
+			[
+				'msRequestFullscreen',
+				'msExitFullscreen',
+				'msFullscreenElement',
+				'msFullscreenEnabled',
+				'MSFullscreenChange',
+				'MSFullscreenError'
+			]
+		];
 
-	$.extend( FullScreen.prototype, {
+		var val;
+		var ret = {};
+		var i, j;
 
-		$button : null,
+		for ( i = 0; i < fnMap.length; i++ ) {
+			val = fnMap[ i ];
 
-		init : function() {
-			var self = this;
+			if ( val && val[ 1 ] in document ) {
+				for ( j = 0; j < val.length; j++ ) {
+					ret[ fnMap[ 0 ][ j ] ] = val[ j ];
+				}
 
-			if ( !self.isAvailable() ) {
-				return;
+				return ret;
 			}
+		}
 
-			self.$button = $('<button data-fancybox-fullscreen class="fancybox-button fancybox-button--fullscreen" title="Full screen (F)"></button>')
-				.appendTo( self.instance.$refs.buttons );
+		return false;
+	})();
 
-			self.instance.$refs.container.on('click.fb-fullscreen', '[data-fancybox-fullscreen]', function(e) {
+	// If browser does not have Full Screen API, then simply unset default button template and stop
+	if ( !fn ) {
+		$.fancybox.defaults.btnTpl.fullScreen = false;
 
-				e.stopPropagation();
-				e.preventDefault();
+		return;
+	}
 
-				self.toggle();
+	var FullScreen = {
+		request : function ( elem ) {
 
-			});
+			elem = elem || document.documentElement;
 
-			$(document).on('onUpdate.fb', function(e, instance) {
-				self.$button.toggle( !!instance.current.opts.fullScreen );
-
-				self.$button.toggleClass('fancybox-button-shrink', self.isActivated() );
-
-			});
-
-			$(document).on('afterClose.fb', function() {
-				self.exit();
-			});
+			elem[ fn.requestFullscreen ]( elem.ALLOW_KEYBOARD_INPUT );
 
 		},
+		exit : function () {
 
-		isAvailable : function() {
-			var element = this.instance.$refs.container.get(0);
-
-			return !!(element.requestFullscreen || element.msRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen);
+			document[ fn.exitFullscreen ]();
 
 		},
+		toggle : function ( elem ) {
 
-		isActivated : function() {
-			return !(!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement);
+			elem = elem || document.documentElement;
 
-		},
-
-		launch : function() {
-			var element = this.instance.$refs.container.get(0);
-
-			if ( !element || this.instance.isClosing ) {
-				return;
-			}
-
-			if (element.requestFullscreen) {
-				element.requestFullscreen();
-
-			} else if (element.msRequestFullscreen) {
-				element.msRequestFullscreen();
-
-			} else if (element.mozRequestFullScreen) {
-				element.mozRequestFullScreen();
-
-			} else if (element.webkitRequestFullscreen) {
-				element.webkitRequestFullscreen(element.ALLOW_KEYBOARD_INPUT);
-			}
-
-		},
-
-		exit : function() {
-
-			if (document.exitFullscreen) {
-				document.exitFullscreen();
-
-			} else if (document.msExitFullscreen) {
-				document.msExitFullscreen();
-
-			} else if (document.mozCancelFullScreen) {
-				document.mozCancelFullScreen();
-
-			} else if (document.webkitExitFullscreen) {
-				document.webkitExitFullscreen();
-			}
-
-		},
-
-		toggle : function() {
-
-			if ( this.isActivated() ) {
+			if ( this.isFullscreen() ) {
 				this.exit();
 
-			} else if ( this.isAvailable() ) {
-				this.launch();
+			} else {
+				this.request( elem );
 			}
 
+		},
+		isFullscreen : function()  {
+
+			return Boolean( document[ fn.fullscreenElement ] );
+
+		},
+		enabled : function()  {
+
+			return Boolean( document[ fn.fullscreenEnabled ] );
+
+		}
+	};
+
+	$(document).on({
+		'onInit.fb' : function(e, instance) {
+			var $container;
+
+			var $button = instance.$refs.toolbar.find('[data-fancybox-fullscreen]');
+
+			if ( instance && !instance.FullScreen && instance.group[ instance.currIndex ].opts.fullScreen ) {
+				$container = instance.$refs.container;
+
+				$container.on('click.fb-fullscreen', '[data-fancybox-fullscreen]', function(e) {
+
+					e.stopPropagation();
+					e.preventDefault();
+
+					FullScreen.toggle( $container[ 0 ] );
+
+				});
+
+				if ( instance.opts.fullScreen && instance.opts.fullScreen.autoStart === true ) {
+					FullScreen.request( $container[ 0 ] );
+				}
+
+				// Expose API
+				instance.FullScreen = FullScreen;
+
+			} else {
+				$button.hide();
+			}
+
+		},
+
+		'afterKeydown.fb' : function(e, instance, current, keypress, keycode) {
+
+			// "P" or Spacebar
+			if ( instance && instance.FullScreen && keycode === 70 ) {
+				keypress.preventDefault();
+
+				instance.FullScreen.toggle( instance.$refs.container[ 0 ] );
+			}
+
+		},
+
+		'beforeClose.fb' : function( instance ) {
+			if ( instance && instance.FullScreen ) {
+				FullScreen.exit();
+			}
 		}
 	});
 
-	$(document).on('onInit.fb', function(e, instance) {
+	$(document).on(fn.fullscreenchange, function() {
+		var instance = $.fancybox.getInstance();
 
-		if ( !!instance.opts.fullScreen && !instance.FullScreen) {
-			instance.FullScreen = new FullScreen( instance );
+		// If image is zooming, then force to stop and reposition properly
+		if ( instance.current && instance.current.type === 'image' && instance.isAnimating ) {
+			instance.current.$content.css( 'transition', 'none' );
+
+			instance.isAnimating = false;
+
+			instance.update( true, true, 0 );
 		}
 
 	});
