@@ -29,10 +29,6 @@ make site-local
 
 The static site is generated in `public`. You may explore the configuration files in `configs` for available config options.
 
-Note that API data hasn't been finalized and checked in yet, so `make site` and `make site-local` currently don't work.
-
-TODO: Drop the note above when data is checked in.
-
 ## Credit
 
 TODO: Credit the data source, content authors, etc.
