@@ -16,7 +16,7 @@
           "targets": {
             "browsers": [
               "> 1% in CN",
-              "ie 8",
+              "ie 9",
               "safari 9"
             ]
           }
