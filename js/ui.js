@@ -303,7 +303,7 @@ $(function () {
         $('.loading').remove()
         $('<div class="loading">加载中</div>').insertAfter($anchor)
 
-        $.get(`/${page}`, function (html) {
+        $.get(`/${page}/`, function (html) {
           var $dummy = $('<div>').html(html)
           $dummy.find('main .status').first().prevAll().remove()
           $dummy.find('main hr').last().nextAll().remove()
@@ -345,7 +345,7 @@ $(function () {
           typeof successCallback === 'function' && successCallback()
         }).fail(function () {
           // AJAX failure
-          console.error(`Failed to fetch /${page}`)
+          console.error(`Failed to fetch /${page}/`)
           $('.loading').addClass('fail').text('加载失败')
 
           typeof failureCallback === 'function' && failureCallback()

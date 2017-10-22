@@ -3,7 +3,7 @@
 {%- from '_macros.html' import full_title, info_nav_bar, status_list with context -%}
 
 {%- macro page_link(page) -%}
-  {{ ('/%d' % page)|sitepath }}
+  {{ ('/%d/' % page)|sitepath }}
 {%- endmacro -%}
 
 {% include '_header.html' %}
