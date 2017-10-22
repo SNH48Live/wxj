@@ -1,0 +1,9 @@
+2017-10-22  SNH48 Live <snh48live@gmail.com>
+
+	* release: Release v1.1.
+
+	* site: Change site layout (/<slug>.html => /<slug>/index.html) to
+	avoid reliance on auto appending the .html suffix (an internal
+	rewrite of the form /<slug> => /<slug>.html). The reason for this
+	change is that for some reason the FTP host that hosts
+	sky-grass.com no longer does this rewrite.
